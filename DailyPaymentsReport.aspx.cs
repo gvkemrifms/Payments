@@ -1,93 +1,85 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.UI.WebControls;
-
 
 namespace DailyCollectionAndPayments
 {
-    public partial class DailyPaymentsReport1 : System.Web.UI.Page
+    public partial class DailyPaymentsReport : System.Web.UI.Page
     {
-        public IEnumerable<DailyPaymentsReport> reports;
-        DailyPaymentsReport rep = new DailyPaymentsReport();
+        DailyReportHelper rep = new DailyReportHelper();
         readonly Helper _helper = new Helper();
+        public string _userId;
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["UserId"] == null) Response.Redirect("Login.aspx");
+
+            if (Session["UserId"] == null)
+                Response.Redirect("Login.aspx");
+            else
+            {
+                _userId = (string)Session["UserId"];
+            }
             if (!IsPostBack)
+            {
+                txtDate.Text = DateTime.Now.ToShortDateString();
                 BindStatesData();
+                BindPayment();
+            }
+        }
+
+        private void BindPayment()
+        {
+            try
+            {
+                var sqlQuery = "SELECT payment_type_id, payment_name FROM m_payments WHERE isactive = 1;";
+                _helper.FillDropDownHelperMethod(sqlQuery, "payment_name", "payment_type_id", ddlSelectPayment);
+            }
+            catch (Exception ex)
+            {
+                _helper.ErrorsEntry(ex);
+            }
+
         }
 
         private void BindStatesData()
         {
             try
             {
-                
-                _helper.FillDropDownHelperMethodWithSp("userbased_state", "state_name", "state_id", ddlState, "@uid", Convert.ToInt32(Session["UserId"]));
+
+                _helper.FillDropDownHelperMethodWithSp("userbased_state", "state_name", "state_id", ddlState, null, "@uid", _userId);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _helper.ErrorsEntry(ex);
             }
         }
 
-        private void Data()
+        protected void ddlState_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var totals = DailyPaymentsReport.dailyReport.Where(x => x.PaymentDate == new DateTime(2017, 7, 21)).Select(x => new { Salary = x.Salary, Fuel = x.Fuel, VendorRegular = x.VendorsRegular, VendorOverDue = x.VendorsOverDue });
-            rep.TotalSalary = totals.Sum(x => x.Salary);
-            reports = DailyPaymentsReport.dailyReport.Where(x => x.PaymentDate == new DateTime(2017, 7, 21));
-            gvDailyPayments.DataSource = reports;
-            gvDailyPayments.DataBind();
-            GetTotalAmount();
-            GetTotalSumForStates();
-            //decimal total = reports.AsEnumerable().Sum(row =>row.Salary /*row.Field<int>("Total")*/);
-            gvDailyPayments.FooterRow.Cells[1].Text = "Total";
-            gvDailyPayments.FooterRow.Cells[1].HorizontalAlign = HorizontalAlign.Right;
-            gvDailyPayments.FooterRow.Cells[2].Text = rep.TotalSalary.ToString("N2");        
-        }
-
-        private void GetTotalAmount()
-        {
-            var totals = DailyPaymentsReport.dailyReport.Where(x => x.PaymentDate == new DateTime(2017, 7, 21)).Select(x => new { Salary = x.Salary, Fuel = x.Fuel, VendorRegular = x.VendorsRegular, VendorOverDue = x.VendorsOverDue });
-            rep.TotalSalary = totals.Sum(x => x.Salary);
-            rep.TotalFuelAmount = totals.Sum(x => x.Fuel);
-            rep.TotalVendorRegular = totals.Sum(x => x.VendorRegular);
-           rep.VendorsOverDue = totals.Sum(x => x.VendorOverDue);
-            //Response.Write("Total Sum Of  Salary =" + rep.TotalSalary.ToString() + "<br/>");
-            //Response.Write("  FuelAmount =" + rep.TotalFuelAmount.ToString() + "<br/>");
-            //Response.Write("  Vender Regular =" + rep.TotalVendorRegular.ToString() + "<br/>");
-            //Response.Write("  Vender Vender OverDue =" + rep.VendorsOverDue.ToString() + "<br/>");
-
-
-        }
-        private void GetTotalSumForStates()
-        {
-            var priceQuery =
-      from prod in reports
-      group prod by prod.StateName into grouping
-      select new
-      {
-          grouping.Key,
-          TotalPrice = grouping.Sum(p => p.Salary) + grouping.Sum(p => p.VendorsOverDue) + grouping.Sum(p => p.Fuel) + grouping.Sum(p => p.VendorsRegular),
-          salary = grouping.Select(x => x.Salary),
-          stateName = grouping.Select(x => x.StateName)
-      };
-            rep.Total = 0;
-            foreach (var grp in priceQuery)
+            try
             {
-                rep.Total = rep.Total + grp.TotalPrice;
-                //Response.Write("State =" + " " + grp.stateName.SingleOrDefault() + " " + " " + "Total Amount=" + rep.Total + "<br/>");
+
+                _helper.FillDropDownHelperMethodWithSp("userbased_projects", "project_name", "project_id", ddlState, ddlProject, "@uid", _userId, "@stid");
+            }
+            catch (Exception ex)
+            {
+                _helper.ErrorsEntry(ex);
             }
         }
 
-        protected void GridView_RowDataBound(object sender, GridViewRowEventArgs e)
+        protected void btnSave_Click(object sender, EventArgs e)
         {
-            e.Row.Cells[7].Visible = false;
-            e.Row.Cells[8].Visible = false;
-            e.Row.Cells[9].Visible = false;
-            e.Row.Cells[10].Visible = false;
-            e.Row.Cells[11].Visible = false;
-           
+            _helper.InsertPaymentDetails(Convert.ToDateTime(txtDate.Text),(Convert.ToInt32(ddlState.SelectedValue)), Convert.ToInt32(ddlProject.SelectedValue), Convert.ToInt32(ddlSelectPayment.SelectedValue), Convert.ToDecimal(txtAmount.Text), Convert.ToInt32(_userId));
+            ClearControls();
+        }
+        private void ClearControls()
+        {
+            txtDate.Text = DateTime.Now.ToShortDateString();
+            txtAmount.Text = "";
+            ddlState.ClearSelection();
+            ddlProject.ClearSelection();
+            ddlSelectPayment.ClearSelection();
+        }
+        protected void btnReset_Click(object sender, EventArgs e)
+        {
+            ClearControls();
         }
     }
 }

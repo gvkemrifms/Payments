@@ -1,0 +1,612 @@
+﻿
+/* Company INfo */
+/* css style sheet starting */
+.txtCompanyID
+{
+    height: 35px;
+}
+.txtCompanyAddress1
+{
+    height: 55px;
+}
+.txtCity
+{
+    height: 35px;
+}
+.txtfaxno
+{
+    height: 35px;
+}
+.txtTINNo
+{
+    height: 35px;
+}
+.txtceDivision
+{
+    height: 35px;
+}
+.txtcstno
+{
+    height: 35px;
+}
+/*user registration*/
+.txtloginId
+{
+    height: 35px;
+}
+.ddlusertype
+{
+    height: 35px;
+}
+.ddlStatus
+{
+    height: 40px;
+}
+/*Change Password*/
+.txtloginid
+{
+    height: 35px;
+}
+.txtoldpassword
+{
+    height: 35px;
+}
+.txtnewpassword
+{
+    height: 35px;
+}
+.txtconformpassword
+{
+    height: 35px;
+}
+/*Tax Master*/
+.txtTaxCode
+{
+    height: 35px;
+}
+.txtCST
+{
+    height: 35px;
+}
+.txtTCSTDS
+{
+    height: 35px;
+}
+.txtOtherTax2
+{
+    height: 35px;
+}
+/*Item Group*/
+.txtItemGroupId
+{
+    height: 35px;
+}
+.txtsubheading
+{
+    height: 35px;
+}
+/*ending item group*/
+.partyName
+{
+    width: 100px;
+}
+.CECommissionerate
+{
+    width: 126px;
+}
+.ContactPerson
+{
+    width: 92px;
+}
+/* Uom*/
+.txtunitid
+{
+    width: 30px;
+}
+/* Storage Location*/
+.txtlocationid
+{
+    width: 30px;
+}
+/* Item Master*/
+.txtitemcode
+{
+    width: 111px;
+    height: 63px;
+}
+.ddlstoragelocation
+{
+    width: 102px;
+}
+.ddlbrand
+{
+    width: 106px;
+}
+.txtmanufacturer
+{
+    width: 100px;
+}
+
+.txtmodel
+{
+    width: 62px;
+    width: 12%;
+}
+.txtmodel1
+{
+    width: 16.51%;
+}
+.txtpartno
+{
+    width: 120px;
+}
+.lblShelfLifeItem
+{
+    width: 100px;
+}
+.txtshelflifeinmonths
+{
+    width: 120px;
+}
+
+.txtpurchaseprice
+{
+    width: 200px;
+}
+/* Party Master*/
+.txtdesignation
+{
+    height: 35px;
+}
+.txtPincode
+{
+    height: 35px;
+}
+.txtpartyCode
+{
+    height: 35px;
+}
+.ddlpartyType
+{
+    height: 55px;
+}
+.txtState
+{
+    height: 35px;
+}
+.txtcerange
+{
+    height: 35px;
+}
+.txtContactPerson1
+{
+    width: 93px;
+    height: 35px;
+}
+.txtcstno
+{
+    height: 35px;
+}
+
+/* ending Style sheet */
+/*purchase voucher*/
+.txtVch_No
+{
+    height: 35px;
+}
+.ddlPartyName
+{
+    height: 35px;
+}
+.txtParty_DC_No
+{
+    height: 35px;
+}
+.txtParty_Inv_Date
+{
+    height: 35px;
+}
+.txtTotalQty
+{
+    height: 35px;
+}
+.txtAmount_After_Tax
+{
+    height: 35px;
+}
+.txtCompanyID
+{
+    height: 35px;
+}
+.txtTotal_Amt
+{
+    height: 55px;
+}
+/* ending Style sheet */
+
+/*Internal Consumption Voucher*/
+.txtvoucherno1
+{
+    height: 45px;
+}
+/*ending style sheet*/
+/*Delivery Challan*/
+.txtdcno
+{
+    height: 40px;
+}
+.txtOrderRefNo
+{
+    height: 40px;
+    width: 106px;
+}
+/*ending delivery challan*/
+/*central Excise Invoice Number*/
+.ddlExciseCommadity
+{
+    width: 168px;
+}
+.txtdate
+{
+    width: 60px;
+}
+
+.ddlinvoicetype
+{
+    width: 175px;
+    height: 35px;
+}
+.txtinvoicenumber
+{
+    width: 96px;
+}
+.ddlTaxCode
+{
+    height: 40px;
+}
+.txtEd_Percentage
+{
+    height: 35px;
+}
+.txtVat_Percentage
+{
+    height: 35px;
+}
+.txtCst_Percentage
+{
+    height: 35px;
+}
+.txtcarriersname
+{
+    height: 35px;
+}
+.ddlConsignee_Name
+{
+    width: 100px;
+    height: 40px;
+}
+.ddlmodeoftransport
+{
+    width: 120px;
+}
+.txttariffheading
+{
+    height: 35px;
+}
+.txtcustporefno
+{
+    height: 35px;
+}
+.txttimeofissue
+{
+    height: 35px;
+}
+.ddlBuyer_Name1
+{
+    width: 78px;
+    height: 35px;
+}
+.txtTotalInvValue_Amount
+{
+    height: 35px;
+}
+.txtremarks
+{
+    height: 40px;
+}
+/*ending Style Sheet*/
+
+/*tax Invoice*/
+.txtinvoicenumber1
+{
+    height: 35px;
+}
+.ddlconsigneename
+{
+    height: 35px;
+}
+.ddlbuyername
+{
+    height: 35px;
+}
+.txtcustporefno1
+{
+    height: 35px;
+}
+.ddlTaxCode1
+{
+    height: 45px;
+}
+.txServiceTax1
+{
+    width : 10%;    
+}
+.txtVATPercentage1
+{
+    width:10%;
+    height: 20px;
+   padding: 10px;
+}
+.txtCSTPercentage1
+{
+    height: 20px;
+}
+.txtTotalInvValueAmount1
+{
+    height: 44px;
+}
+.txtremarks1
+{
+    height: 20px;
+}
+/*ending style sheet*/
+/*Cenvet Invoice*/
+.txtinvoicenumber6
+{
+    height: 40px;
+}
+.ddlbuyername5
+{
+    height: 40px;
+}
+.ddlconsigneename
+{
+    height: 40px;
+}
+.ddlDelerName
+{
+    height: 40px;
+}
+.txtDateTimeofIssue
+{
+    height: 40px;
+}
+.txtRG23DSINo
+{
+    height: 40px;
+}
+/*Ending Cenvet Invoice*/
+
+/*
+Calender */
+
+.ajax__calendar .ajax__calendar_container
+{
+    width: 17%;
+}
+
+
+.Item_Master1 tr td
+{
+    margin-bottom: 25px;
+    height: 35px;
+}
+.item_Code
+{
+    width: 135px;
+}
+.barcode
+{
+    width: 100px;
+}
+.txtbar_code
+{
+    width: 150px;
+}
+.lbl_part_no
+{
+    width: 164px;
+}
+.Item_Master2 tr td
+{
+    height: 35px;
+}
+.Item_Master3 tr td
+{
+    height: 55px;
+}
+
+
+.Item_Master tr td
+{
+    margin-bottom: 25px;
+    height: 55px;
+}
+.Supplier_Master
+{
+    height: 330px;
+}
+.Supplier_Master1
+{
+    height: 190px;
+}
+
+
+
+.Order_Registration
+{
+    height: 330px;
+}
+
+.Delivery_Challan1
+{
+    height: 70px;
+}
+
+.Customer_Master
+{
+    height: 330px;
+}
+.User_registration
+{
+    height: 215px;
+}
+.Company_registration
+{
+    height: 330px;
+}
+
+.form-group .registration_form tr td table
+{
+    width: 100%;
+}
+.check_row
+{
+    width: 75%;
+}
+.registration_form tr td
+{
+    height: 45px;
+}
+
+.ListControl input[type=checkbox]
+{
+    display: none;
+    float: left;
+    width: 100%;
+}
+
+.ListControl label
+{
+    display: block;
+    float: left;
+    color: #000;
+    cursor: pointer;
+    text-indent: 20px;
+    white-space: nowrap;
+}
+
+.ListControl input[type=checkbox] + label
+{
+    display: block;
+    width: 1.1em;
+    height: 1.25em;
+    border: 0.0625em solid rgb(192,192,192);
+    border-radius: 0.25em;
+    background: #0F1DB9;
+    background-image: -moz-linear-gradient(#0B3FF6, #100CBD);
+    background-image: -ms-linear-gradient(#0B3FF6, #100CBD);
+    background-image: -o-linear-gradient(#0B3FF6, #100CBD);
+    background-image: -webkit-linear-gradient(#0B3FF6, #100CBD);
+    background-image: linear-gradient(#0B3FF6, #100CBD);
+    vertical-align: middle;
+    line-height: 1em;
+    font-size: 14px;
+    margin-right: 15px;
+}
+
+
+.ListControl input[type=checkbox]:checked + label::before
+{
+    content: "\2714";
+    color: #ff0;
+    height: 1em;
+    line-height: 1.1em;
+    width: 1em;
+    font-weight: 900;
+    margin-right: 6px;
+    margin-left: -20px;
+}
+
+.form-group img
+{
+    width: 100%;
+}
+
+
+
+/*----- Tabs -----*/
+.tabs
+{
+    width: 100%;
+    display: inline-block;
+}
+
+/*----- Tab Links -----*/
+/* Clearfix */
+.tab-links:after
+{
+    display: block;
+    clear: both;
+    content: '';
+}
+.tab-links
+{
+    padding-left: 0px;
+}
+.tab-links li
+{
+    margin: 0px 5px;
+    float: left;
+    list-style: outside none none;
+    border: 1px solid rgb(40, 96, 144);
+    border-radius: 3px;
+    color: rgb(40, 96, 144);
+}
+
+.tab-links a
+{
+    padding: 9px 15px;
+    display: inline-block;
+    border-radius: 3px 3px 0px 0px;
+    background: rgb(40, 96, 144) none repeat scroll 0% 0%;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    transition: all linear 0.15s;
+    text-decoration: none;
+}
+
+.tab-links a:hover
+{
+    background: #a7cce5;
+    text-decoration: none;
+}
+
+li.active a, li.active a:hover
+{
+    background: #fff;
+    color: #286090;
+    text-decoration: none;
+}
+
+/*----- Content of Tabs -----*/
+.tab-content
+{
+    padding: 15px;
+    border-radius: 3px;
+    box-shadow: -2px -2px 5px rgba(0, 0, 0, 0.15);
+    background: #fff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    margin-bottom: 15px;
+}
+
+.tab
+{
+    display: none;
+}
+
+.tab.active
+{
+    display: block;
+}

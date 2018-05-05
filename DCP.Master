@@ -8,17 +8,61 @@
     <script src="scripts/jquery-3.3.1.min.js"></script>
     <script src="scripts/jquery-ui-1.12.1.min.js"></script>
     <link href="Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+    <link href="css/TextBoxCssStyles.css" rel="stylesheet" />
     <script src="scripts/select2.full.min.js"></script>
     <link href="scripts/select2.min.css" rel="stylesheet" />
     <link href="css/custom.css" rel="stylesheet" />
              <link href="css/bootstrap.min.css" rel="stylesheet" />  
     <link href="css/Forms_style.css" rel="stylesheet" />  
     <link href="css/style.css" rel="stylesheet" />
+
+    <link href="css/menu_styles.css" rel="stylesheet" />
+     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=1280" />
+    <meta name="keywords" content="  " />
+    <meta name="Description" content="           " />
+    <meta property="og:title" content=" xyz " />
+    <meta property="og:description" content="" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="http://www.laksanait.com" />
+    <meta property="og:image" content="http://www.laksanait.com//images/logo.png" />
+    <meta property="og:site_name" content="xyz" />
+    <link href="../css/font-awesome.css" rel="stylesheet" type="text/css" />
+    <!-- Bootstrap Core CSS -->
+    <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- MetisMenu CSS -->
+    <link href="../bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
+    
+    <!-- Custom Fonts -->
+    <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <asp:ContentPlaceHolder id="head" runat="server"> 
     </asp:ContentPlaceHolder>
 </head>
 <body style="height:100%;width:100%">
-    <form id="form1" runat="server">       
+
+    <form id="form1" runat="server">    
+        <div id="sidebar-menu">
+                        <div class="menu_section" class="main_menu_side hidden-print main_menu">
+                            <h3>Daily Collection And Payment Report</h3>
+                            <ul class="nav side-menu">
+                                <li>
+                                    <ul class="nav child_menu">
+
+                                        <li style="color:red;font-family:'Times New Roman', Times, serif;"  ><a href="DailyCollectionReport.aspx">Daily Collection Report</a>
+                                        </li>
+                                        <li style="color:red;font-family:'Times New Roman', Times, serif;"><a href="DailyPaymentsReport.aspx">Daily Payments Report</a>
+                                        </li>                                       
+                                    </ul>
+                                </li>
+                                </ul>
+                        </div>
+
+
+                    </div>   
         <table style="width:96%;height:100%;margin-left:2%;">
             <tr><td><div>
         <asp:ContentPlaceHolder id="ContentPlaceHolder" runat="server">
@@ -30,7 +74,9 @@
                  </asp:ContentPlaceHolder>
                     </div>
                 </td></tr>
-        </table>    
+        </table> 
+           
     </form>
+
 </body>
 </html>

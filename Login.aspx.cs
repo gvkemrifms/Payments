@@ -30,7 +30,7 @@ namespace DailyCollectionAndPayments
             if (dtLogin.Rows.Count > 0)
             {
                 Session["UserId"] = dtLogin.Rows[0][0].ToString();
-                Response.Redirect("~/DailyPaymentsReport.aspx");
+                Response.Redirect("~/DailyCollectionReport.aspx");
                 return;
             }
             //else if (dtLogin.Rows[0]["role_id"].ToString() == "6" || dtLogin.Rows[0]["role_id"].ToString() == "9")

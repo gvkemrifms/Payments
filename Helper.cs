@@ -23,7 +23,7 @@ namespace DailyCollectionAndPayments
             dropDownValue.DataValueField = valueField;
             dropDownValue.DataBind();
         }
-        public void FillDropDownHelperMethodWithSp(string commandText, string textFieldValue = null, string valueField = null, DropDownList dropDownValue = null, string parameterValue = null,int? uid=null)
+        public void FillDropDownHelperMethodWithSp(string commandText, string textFieldValue = null, string valueField = null, DropDownList dropDownValue = null,DropDownList dropDownValue1=null, string parameterValue = null,string uid=null,string parameterValue1=null)
         {
             string CONN_STRING = ConfigurationManager.AppSettings["GvkEmriCon"];
             var conn = new MySqlConnection(CONN_STRING);
@@ -33,19 +33,30 @@ namespace DailyCollectionAndPayments
             if (dropDownValue != null )
             {
                 if (parameterValue != null)
-                    cmd.Parameters.AddWithValue(parameterValue,uid);
-                CommonMethod(textFieldValue, valueField, dropDownValue, ds, cmd);
-                dropDownValue.Items.Insert(0, new ListItem("--Select--", "0"));
+                    cmd.Parameters.AddWithValue(parameterValue,Convert.ToInt32(uid));
+                if(parameterValue1!=null)
+                    cmd.Parameters.AddWithValue(parameterValue1,Convert.ToInt32(dropDownValue.SelectedValue));
+                if (parameterValue != null && parameterValue1 == null)
+                {
+                    CommonMethod(textFieldValue, valueField, dropDownValue, ds, cmd);
+                    dropDownValue.Items.Insert(0, new ListItem("--Select--", "0"));
+                }
+                else
+                {
+                    CommonMethod(textFieldValue, valueField, dropDownValue1, ds, cmd);
+                    dropDownValue1.Items.Insert(0, new ListItem("--Select--", "0"));
+                }
+               
             }
         }
            
         public void FillDropDownHelperMethod(string query, string textFieldValue, string valueField, DropDownList dropdownId)
         {
-            using (var con = new SqlConnection(ConfigurationManager.AppSettings["Str"]))
+            using (var con = new MySqlConnection(ConfigurationManager.AppSettings["GvkEmriCon"]))
             {
                 con.Open();
-                var cmd = new SqlCommand(query, con);
-                var da = new SqlDataAdapter(cmd);
+                var cmd = new MySqlCommand(query, con);
+                var da = new MySqlDataAdapter(cmd);
                 var ds = new DataSet();
                 da.Fill(ds);
                 dropdownId.Items.Clear();
@@ -105,9 +116,9 @@ namespace DailyCollectionAndPayments
 
         public int ExecuteInsertStatement(string insertStmt)
         {
-            using (var conn = new SqlConnection(ConfigurationManager.AppSettings["Str"]))
+            using (var conn = new MySqlConnection(ConfigurationManager.AppSettings["GvkEmriCon"]))
             {
-                using (var comm = new SqlCommand())
+                using (var comm = new MySqlCommand())
                 {
                     var i = 0;
                     comm.Connection = conn;
@@ -156,6 +167,79 @@ namespace DailyCollectionAndPayments
                 streamWriter.WriteLine(errorNo.ToString());
                 streamWriter.Flush();
                 streamWriter.Close();
+            }
+        }
+        public int InsertCollectionDetails(int stateid, int projectId, DateTime DCDate, decimal amount, int uid)
+        {
+            int num = 0;
+            MySqlCommand cmd = new MySqlCommand();
+            try
+            {
+                cmd.Parameters.AddWithValue("@sid", stateid);
+                cmd.Parameters.AddWithValue("@pid", projectId);
+                cmd.Parameters.AddWithValue("@date", DCDate);
+                cmd.Parameters.AddWithValue("@amouont", amount);
+                cmd.Parameters.AddWithValue("@uid", uid);
+                num = ExecuteNonQuery(cmd, CommandType.StoredProcedure, "insert_collection");
+            }
+            catch (Exception ex)
+            {
+                ErrorsEntry(ex);
+            }
+            return num;
+        }
+        public int InsertPaymentDetails(DateTime datetime,int stateid, int projectId,int projectType, decimal amount, int uid)
+        {
+            int num = 0;
+            MySqlCommand cmd = new MySqlCommand();
+            try
+            {
+                cmd.Parameters.AddWithValue("@sid", stateid);
+                cmd.Parameters.AddWithValue("@pid", projectId);
+                cmd.Parameters.AddWithValue("@payid", projectId);
+                cmd.Parameters.AddWithValue("@paydate", datetime);
+                cmd.Parameters.AddWithValue("@amount", amount);
+                cmd.Parameters.AddWithValue("@userid", uid);
+                num = ExecuteNonQuery(cmd, CommandType.StoredProcedure, "insert_payments");
+            }
+            catch (Exception ex)
+            {
+                ErrorsEntry(ex);
+            }
+            return num;
+        }
+        public static int ExecuteNonQuery(MySqlCommand cmd, CommandType cmdType, string cmdText)
+        {
+            int num = 0;
+            try
+            {
+                using (MySqlConnection conn = new MySqlConnection(ConfigurationManager.AppSettings["GvkEmriCon"]))
+                {
+                    PrepareCommand(cmd, conn, (MySqlTransaction)null, cmdType, cmdText);
+                    num = cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                
+            }
+            return num;
+        }
+        private static void PrepareCommand(MySqlCommand cmd, MySqlConnection conn, MySqlTransaction trans, CommandType cmdType, string cmdText)
+        {
+            try
+            {
+                if (conn.State != ConnectionState.Open)
+                    conn.Open();
+                cmd.Connection = conn;
+                cmd.CommandText = cmdText;
+                if (trans != null)
+                    cmd.Transaction = trans;
+                cmd.CommandType = cmdType;
+            }
+            catch (Exception ex)
+            {
+               
             }
         }
     }

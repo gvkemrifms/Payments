@@ -10,7 +10,7 @@
 namespace DailyCollectionAndPayments {
     
     
-    public partial class DailyPaymentsReport1 {
+    public partial class DailyPaymentsReport {
         
         /// <summary>
         /// ddlState control.
@@ -29,6 +29,15 @@ namespace DailyCollectionAndPayments {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlProject;
+        
+        /// <summary>
+        /// ddlSelectPayment control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlSelectPayment;
         
         /// <summary>
         /// txtDate control.
@@ -65,14 +74,5 @@ namespace DailyCollectionAndPayments {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnReset;
-        
-        /// <summary>
-        /// gvDailyPayments control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvDailyPayments;
     }
 }

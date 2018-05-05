@@ -1525,9 +1525,16 @@
     <Content Include="css\ionicons-master\src\xbox.svg" />
     <Content Include="css\jquery-ui-timepicker-addon.css" />
     <Content Include="css\main.css" />
+    <Content Include="css\menu_styles.css" />
+    <Content Include="css\metisMenu.css" />
+    <Content Include="css\metisMenu.js" />
+    <Content Include="css\metisMenu.min.css" />
     <Content Include="css\plugins.css" />
     <Content Include="css\style.css" />
+    <Content Include="css\table_form.css" />
+    <Content Include="css\TextBoxCssStyles.css" />
     <Content Include="css\themes.css" />
+    <Content Include="DailyPaymentsReport.aspx" />
     <Content Include="img\Edit.png" />
     <Content Include="img\excel.png" />
     <Content Include="img\excel2.png" />
@@ -1624,7 +1631,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DailyPaymentsReport.aspx" />
+    <Content Include="DailyCollectionReport.aspx" />
     <Content Include="scripts\ai.0.22.9-build00167.js" />
     <Content Include="scripts\ai.0.22.9-build00167.min.js" />
     <Content Include="scripts\jquery-3.3.1.min.js" />
@@ -1636,7 +1643,6 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="VerifyLoginDetails.cs" />
     <Compile Include="DailyPaymentsReport.aspx.cs">
       <DependentUpon>DailyPaymentsReport.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1644,7 +1650,15 @@
     <Compile Include="DailyPaymentsReport.aspx.designer.cs">
       <DependentUpon>DailyPaymentsReport.aspx</DependentUpon>
     </Compile>
-    <Compile Include="DailyPaymentsReport.cs" />
+    <Compile Include="VerifyLoginDetails.cs" />
+    <Compile Include="DailyCollectionReport.aspx.cs">
+      <DependentUpon>DailyCollectionReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DailyCollectionReport.aspx.designer.cs">
+      <DependentUpon>DailyCollectionReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DailyReportHelper.cs" />
     <Compile Include="DCP.Master.cs">
       <DependentUpon>DCP.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1664,6 +1678,15 @@
     <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bootstrap\" />
+    <Folder Include="bower_components\" />
+    <Folder Include="dist\" />
+    <Folder Include="font-awesome\" />
+    <Folder Include="images\" />
+    <Folder Include="jquery\" />
+    <Folder Include="Styles\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
