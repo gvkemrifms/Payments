@@ -23,7 +23,7 @@ namespace DailyCollectionAndPayments
             dropDownValue.DataValueField = valueField;
             dropDownValue.DataBind();
         }
-        public void FillDropDownHelperMethodWithSp(string commandText, string textFieldValue = null, string valueField = null, DropDownList dropDownValue = null,DropDownList dropDownValue1=null, string parameterValue = null,string uid=null,string parameterValue1=null)
+        public void FillDropDownHelperMethodWithSp(string commandText, string textFieldValue = null, string valueField = null, DropDownList dropDownValue = null,DropDownList dropDownValue1=null, string parameterValue = null,string uid=null,string parameterValue1=null,GridView gvCollections=null)
         {
             string CONN_STRING = ConfigurationManager.AppSettings["GvkEmriCon"];
             var conn = new MySqlConnection(CONN_STRING);
@@ -36,7 +36,7 @@ namespace DailyCollectionAndPayments
                     cmd.Parameters.AddWithValue(parameterValue,Convert.ToInt32(uid));
                 if(parameterValue1!=null)
                     cmd.Parameters.AddWithValue(parameterValue1,Convert.ToInt32(dropDownValue.SelectedValue));
-                if (parameterValue != null && parameterValue1 == null)
+                if (parameterValue != null && parameterValue1 == null && gvCollections==null)
                 {
                     CommonMethod(textFieldValue, valueField, dropDownValue, ds, cmd);
                     dropDownValue.Items.Insert(0, new ListItem("--Select--", "0"));
@@ -46,7 +46,24 @@ namespace DailyCollectionAndPayments
                     CommonMethod(textFieldValue, valueField, dropDownValue1, ds, cmd);
                     dropDownValue1.Items.Insert(0, new ListItem("--Select--", "0"));
                 }
-               
+                
+                }
+            if (gvCollections != null)
+            {
+                cmd.Parameters.AddWithValue(parameterValue, Convert.ToInt32(uid));
+                var da = new MySqlDataAdapter(cmd);
+                da.Fill(ds);
+                var dt = ds.Tables[0];
+                if (dt.Rows.Count > 0)
+                {
+                    gvCollections.DataSource = dt;
+                    gvCollections.DataBind();
+                }
+                else
+                {
+                    gvCollections.DataSource = null;
+                    gvCollections.DataBind();
+                }
             }
         }
            
@@ -242,5 +259,19 @@ namespace DailyCollectionAndPayments
                
             }
         }
+        public DataSet ReturnDS(string commandText, string parameterValue = null, string uid = null)
+        {
+            string CONN_STRING = ConfigurationManager.AppSettings["GvkEmriCon"];
+            var conn = new MySqlConnection(CONN_STRING);
+            var ds = new DataSet();
+            conn.Open();
+            var cmd = new MySqlCommand { Connection = conn, CommandType = CommandType.StoredProcedure, CommandText = commandText };
+
+                cmd.Parameters.AddWithValue(parameterValue, Convert.ToInt32(uid));
+                var da = new MySqlDataAdapter(cmd);
+                da.Fill(ds);
+            return ds;
+        }
+
     }
 }

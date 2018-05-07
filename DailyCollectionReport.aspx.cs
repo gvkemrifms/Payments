@@ -24,6 +24,7 @@ namespace DailyCollectionAndPayments
             {
                 BindStatesData();
                 txtDate.Text = DateTime.Now.Date.ToShortDateString();
+                BindGridDetails();
             }
                 
             
@@ -44,6 +45,18 @@ namespace DailyCollectionAndPayments
             }
         }
 
+        private void BindGridDetails()
+        {
+            try
+            {
+
+                _helper.FillDropDownHelperMethodWithSp("userCollection_grid", null, null, null, null, "@uid", _userId, null, gvDailyPayments);
+            }
+            catch (Exception ex)
+            {
+                _helper.ErrorsEntry(ex);
+            }
+        }
         private void Data()
         {
             var totals = DailyReportHelper.dailyReport.Where(x => x.PaymentDate == new DateTime(2017, 7, 21)).Select(x => new { Salary = x.Salary, Fuel = x.Fuel, VendorRegular = x.VendorsRegular, VendorOverDue = x.VendorsOverDue });
@@ -118,8 +131,11 @@ namespace DailyCollectionAndPayments
 
         protected void btnSave_Click(object sender, EventArgs e)
         {
+            if(btnSave.Text=="Save")
             _helper.InsertCollectionDetails((Convert.ToInt32(ddlState.SelectedValue)), Convert.ToInt32(ddlProject.SelectedValue),Convert.ToDateTime(txtDate.Text), Convert.ToDecimal(txtAmount.Text), Convert.ToInt32(_userId));
+
             ClearControls();
+            BindGridDetails();
         }
 
         private void ClearControls()
@@ -134,6 +150,18 @@ namespace DailyCollectionAndPayments
         protected void btnReset_Click(object sender, EventArgs e)
         {
             ClearControls();
+        }
+
+        protected void gvDailyPayments_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            var ds = _helper.ReturnDS("userCollection_grid", "@uid", _userId);
+            ddlState.SelectedItem.Text = ds.Tables[0].Rows[0]["state_name"].ToString();
+           // ddlProject.SelectedItem.Text = ds.Tables[0].Rows[0]["project_name"].ToString();
+            txtDate.Text = Convert.ToString(ds.Tables[0].Rows[0]["date"]);
+            txtAmount.Text = Convert.ToString(ds.Tables[0].Rows[0]["amount"]);
+            btnSave.Text = "Update";
+          
         }
     }
 }

@@ -3,70 +3,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-     <style type="text/css">
-        .MenuBar {
-            margin-top: -3%;
-            background-color: black;           
-        }
-
-        .main_menu, .main_menu:hover {
-            width: 175px;
-            background-color: black;
-            color: white;
-            text-align: center;
-            height: 30px;
-            line-height: 25px;
-            margin-right: 3px;
-            font-weight: bolder;
-            
-        }
-
-        #MainContent_menuBar ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            width: auto;
-            margin-left: 0%;
-            height: 30px;
-            float: right;
-        }
-
-        .main_menu:hover {
-            background-color: #ccc;
-            font-weight: bolder;
-        }
-
-        .level_menu, .level_menu:hover {
-            width: 100%;
-            background-color: black;
-            color: white;
-            text-align: center;
-            height: 30px;
-            line-height: 30px;
-            /*margin-top: 5px;*/
-        }
-
-            .level_menu:hover {
-                background-color: #ccc;
-            }
-
-        .selected, .selected:hover {
-            background-color: white;
-            color: black;
-        }
-
-        .level2 {
-            background-color: #C36464;
-            left: 90px;
-            color: white;
-            text-align: left;
-        }
-        .level1 
-        {
-           
-            float: right;
-        }
-    </style>
+     
 
     <script type="text/javascript"> 
         $(function () {
@@ -119,7 +56,7 @@
             return false;
         }
     </script>
-  <legend align="center" style="color:brown"> Daily Collection</legend>  
+  <legend align="center" style="color:brown;margin-top:-50px"> Daily Collection</legend>  
           <br />
            
     <table align="center" style="margin-top:20px">
@@ -173,17 +110,68 @@
     </table>
 
     
- <div align="center" style="margin-top:20px">
-     <asp:GridView ID="gvDailyPayments" runat="server" BorderColor="#999999" BorderWidth="3px" OnRowDataBound="GridView_RowDataBound" BackColor="#CCCCCC" BorderStyle="Solid" CellPadding="4" CellSpacing="2" ForeColor="Black">
-         <FooterStyle BackColor="#CCCCCC" />
-         <HeaderStyle BackColor="Black" Font-Bold="True" ForeColor="White" />
-         <PagerStyle BackColor="#CCCCCC" ForeColor="Black" HorizontalAlign="Left" />
-         <RowStyle BackColor="White" />
-         <SelectedRowStyle BackColor="#000099" Font-Bold="True" ForeColor="White" />
+ <div align="center" style="margin-top:20px;width:1000px;margin-left:100px" >
+     <asp:GridView ID="gvDailyPayments" runat="server" BackColor="White" AutoGenerateColumns="False" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="3" OnSelectedIndexChanged="gvDailyPayments_SelectedIndexChanged" Width="1000px"  >
+         <FooterStyle BackColor="White" ForeColor="#000066" />
+         <HeaderStyle BackColor="#006699" Font-Bold="True" ForeColor="White" />
+         <PagerStyle BackColor="White" ForeColor="#000066" HorizontalAlign="Left" />
+         <RowStyle ForeColor="#000066" />
+         <SelectedRowStyle BackColor="#669999" Font-Bold="True" ForeColor="White" />
          <SortedAscendingCellStyle BackColor="#F1F1F1" />
-         <SortedAscendingHeaderStyle BackColor="#808080" />
+         <SortedAscendingHeaderStyle BackColor="#007DBB" />
          <SortedDescendingCellStyle BackColor="#CAC9C9" />
-         <SortedDescendingHeaderStyle BackColor="#383838" />
+         <SortedDescendingHeaderStyle BackColor="#00547E" />
+         <Columns>  
+                <asp:TemplateField HeaderText="state_name">  
+                    <ItemTemplate>  
+                        <asp:Label ID="lbl_ID" runat="server" Text='<%#Eval("state_name") %>'></asp:Label>  
+                    </ItemTemplate>  
+                </asp:TemplateField>  
+                <asp:TemplateField HeaderText="project_name">  
+                    <ItemTemplate>  
+                        <asp:Label ID="lbl_Name" runat="server" Text='<%#Eval("project_name") %>'></asp:Label>  
+                    </ItemTemplate>  
+                    <EditItemTemplate>  
+                        <asp:TextBox ID="txt_Name" runat="server" Text='<%#Eval("project_name") %>'></asp:TextBox>  
+                    </EditItemTemplate>  
+                </asp:TemplateField>  
+                <asp:TemplateField HeaderText="user_name">  
+                    <ItemTemplate>  
+                        <asp:Label ID="lbl_City" runat="server" Text='<%#Eval("user_name") %>'></asp:Label>  
+                    </ItemTemplate>  
+                    <EditItemTemplate>  
+                        <asp:TextBox ID="txt_City" runat="server" Text='<%#Eval("user_name") %>'></asp:TextBox>  
+                    </EditItemTemplate>  
+                </asp:TemplateField>  
+             <asp:TemplateField HeaderText="user_name">  
+                    <ItemTemplate>  
+                        <asp:Label ID="lblamount" runat="server" Text='<%#Eval("amount") %>'></asp:Label>  
+                    </ItemTemplate>  
+                    <EditItemTemplate>  
+                        <asp:TextBox ID="txtamount" runat="server" Text='<%#Eval("amount") %>'></asp:TextBox>  
+                    </EditItemTemplate>  
+                </asp:TemplateField>  
+                  <asp:TemplateField HeaderText="date">  
+                    <ItemTemplate>  
+                        <asp:Label ID="lbldate" runat="server" Text='<%#Eval("date") %>'></asp:Label>  
+                    </ItemTemplate>  
+                    <EditItemTemplate>  
+                        <asp:TextBox ID="txtdate" runat="server" Text='<%#Eval("date") %>'></asp:TextBox>  
+                    </EditItemTemplate>  
+                </asp:TemplateField>  
+             <asp:TemplateField HeaderText="createdon">  
+                    <ItemTemplate>  
+                        <asp:Label ID="lblcreatedon" runat="server" Text='<%#Eval("createdon") %>'></asp:Label>  
+                    </ItemTemplate>  
+                    <EditItemTemplate>  
+                        <asp:TextBox ID="txtdate" runat="server" Text='<%#Eval("createdon") %>'></asp:TextBox>  
+                    </EditItemTemplate>  
+                </asp:TemplateField> 
+           
+ 
+            <asp:CommandField  ShowSelectButton="true" ControlStyle-Width="20px" ControlStyle-Height="20px" ControlStyle-ForeColor="Blue" SelectText="Edit" ButtonType="Image" SelectImageUrl="~/images/edit1.png"  />
+             <asp:CommandField ShowDeleteButton="true" ControlStyle-Width="20px" ControlStyle-Height="20px"  ControlStyle-ForeColor="Blue" SelectText="Delete"  ButtonType="Image" SelectImageUrl="~/images/edit1.png" />
+     </Columns> 
      </asp:GridView>
  </div>
 </asp:Content>

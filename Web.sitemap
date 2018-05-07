@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+  
+    <siteMapNode url="" title="Daily Collection And Payments"  description="">
+      <siteMapNode url="DailyCollectionReport.aspx" title="Daily Collection Report"  description="Collection Report" />
+     
+      <!--<siteMapNode url="javascript:;" title="Services"  description="Services Page">
+        <siteMapNode url ="Consulting.aspx" title="Consulting"  description="Consulting Page"></siteMapNode>
+        <siteMapNode url ="Outsourcing.aspx" title="Outsourcing"  description="Outsourcing Page"></siteMapNode>
+      </siteMapNode>-->
+      <siteMapNode url="DailyPaymentsReport.aspx" title="Daily Payments Report"  description="Payments Report" />
+      <!--<siteMapNode url="Contact.aspx" title="Contact"  description="Contact Us Page" />-->
+    </siteMapNode>
+</siteMap>

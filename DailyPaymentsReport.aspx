@@ -2,70 +2,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <style type="text/css">
-        .MenuBar {
-            margin-top: -3%;
-            background-color: black;           
-        }
-
-        .main_menu, .main_menu:hover {
-            width: 175px;
-            background-color: black;
-            color: white;
-            text-align: center;
-            height: 30px;
-            line-height: 25px;
-            margin-right: 3px;
-            font-weight: bolder;
-            
-        }
-
-        #MainContent_menuBar ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            width: auto;
-            margin-left: 0%;
-            height: 30px;
-            float: right;
-        }
-
-        .main_menu:hover {
-            background-color: #ccc;
-            font-weight: bolder;
-        }
-
-        .level_menu, .level_menu:hover {
-            width: 100%;
-            background-color: black;
-            color: white;
-            text-align: center;
-            height: 30px;
-            line-height: 30px;
-            /*margin-top: 5px;*/
-        }
-
-            .level_menu:hover {
-                background-color: #ccc;
-            }
-
-        .selected, .selected:hover {
-            background-color: white;
-            color: black;
-        }
-
-        .level2 {
-            background-color: #C36464;
-            left: 90px;
-            color: white;
-            text-align: left;
-        }
-        .level1 
-        {
-           
-            float: right;
-        }
-    </style>
+  
         <script type="text/javascript"> 
         $(function () {
          $('#<%=txtDate.ClientID%>').datepicker({
@@ -120,7 +57,7 @@
             return false;
         }
             </script>
-     <legend align="center" style="color:brown"> Daily Payments</legend>  
+     <legend align="center" style="color:brown;margin-top:-50px"> Daily Payments</legend>  
           <br />
            
     <table align="center" style="margin-top:20px">
@@ -180,5 +117,22 @@
             </td>
         </tr>
     </table>
-
+    <br />
+    <div align="center" style="margin-top:25px;width:1000px;margin-left:100px">
+     <asp:GridView ID="gvPayments" runat="server" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="3" OnSelectedIndexChanged="gvPayments_SelectedIndexChanged" GridLines="Both" width="1000px" >
+            <FooterStyle BackColor="White" ForeColor="#000066" />
+            <HeaderStyle BackColor="#006699" Font-Bold="True" ForeColor="White" />
+            <PagerStyle BackColor="White" ForeColor="#000066" HorizontalAlign="Left" />
+            <RowStyle ForeColor="#000066" />
+            <SelectedRowStyle BackColor="#669999" Font-Bold="True" ForeColor="White" />
+            <SortedAscendingCellStyle BackColor="#F1F1F1" />
+            <SortedAscendingHeaderStyle BackColor="#007DBB" />
+            <SortedDescendingCellStyle BackColor="#CAC9C9" />
+            <SortedDescendingHeaderStyle BackColor="#00547E" />
+ <Columns>
+                    <asp:CommandField  ShowSelectButton="true" ControlStyle-ForeColor="Blue" SelectText="Edit" HeaderText="Edit" />
+                  <asp:CommandField ShowDeleteButton="true" ControlStyle-ForeColor="Blue" SelectText="Delete" HeaderText="Delete" />
+                </Columns>
+       </asp:GridView>
+    </div>
     </asp:Content>

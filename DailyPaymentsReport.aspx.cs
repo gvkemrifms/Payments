@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web.UI.WebControls;
 
 namespace DailyCollectionAndPayments
 {
@@ -21,6 +22,7 @@ namespace DailyCollectionAndPayments
                 txtDate.Text = DateTime.Now.ToShortDateString();
                 BindStatesData();
                 BindPayment();
+                BindGridDetails();
             }
         }
 
@@ -68,6 +70,7 @@ namespace DailyCollectionAndPayments
         {
             _helper.InsertPaymentDetails(Convert.ToDateTime(txtDate.Text),(Convert.ToInt32(ddlState.SelectedValue)), Convert.ToInt32(ddlProject.SelectedValue), Convert.ToInt32(ddlSelectPayment.SelectedValue), Convert.ToDecimal(txtAmount.Text), Convert.ToInt32(_userId));
             ClearControls();
+            BindGridDetails();
         }
         private void ClearControls()
         {
@@ -80,6 +83,29 @@ namespace DailyCollectionAndPayments
         protected void btnReset_Click(object sender, EventArgs e)
         {
             ClearControls();
+        }
+        private void BindGridDetails()
+        {
+            try
+            {
+
+                _helper.FillDropDownHelperMethodWithSp("userpayments_grid", null, null, null, null, "@uid", _userId, null, gvPayments);
+            }
+            catch (Exception ex)
+            {
+                _helper.ErrorsEntry(ex);
+            }
+        }
+
+        protected void gvPayments_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ddlState.Items.Insert(0, "--Select--");
+            ddlState.SelectedItem.Text = gvPayments.SelectedRow.Cells[2].Text;
+
+            ddlSelectPayment.SelectedItem.Text = gvPayments.SelectedRow.Cells[4].Text;
+            txtDate.Text = gvPayments.SelectedRow.Cells[6].Text;
+            txtAmount.Text = gvPayments.SelectedRow.Cells[5].Text;
+            //  ddlProject.SelectedItem.Text = gvDailyPayments.SelectedRow.Cells[0].Text;
         }
     }
 }

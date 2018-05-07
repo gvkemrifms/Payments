@@ -1535,6 +1535,12 @@
     <Content Include="css\TextBoxCssStyles.css" />
     <Content Include="css\themes.css" />
     <Content Include="DailyPaymentsReport.aspx" />
+    <Content Include="DailyCollectionReportDetails.aspx" />
+    <Content Include="images\delete.png" />
+    <Content Include="images\deleteicon.png" />
+    <Content Include="images\edit1.png" />
+    <Content Include="images\editimage.png" />
+    <Content Include="images\icons8-cancel-96.png" />
     <Content Include="img\Edit.png" />
     <Content Include="img\excel.png" />
     <Content Include="img\excel2.png" />
@@ -1629,6 +1635,16 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+    <Content Include="Styles\css\bootstrap.css" />
+    <Content Include="Styles\css\bootstrap.min.css" />
+    <Content Include="Styles\css\jquery.snippet.min.css" />
+    <Content Include="Styles\css\styles.css" />
+    <Content Include="Styles\js\bootstrap.js" />
+    <Content Include="Styles\js\bootstrap.min.js" />
+    <Content Include="Styles\js\jquery.snippet.min.js" />
+    <Content Include="Styles\js\scripts.js" />
+    <Content Include="Styles\Site.css" />
+    <Content Include="Web.sitemap" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="DailyCollectionReport.aspx" />
@@ -1649,6 +1665,13 @@
     </Compile>
     <Compile Include="DailyPaymentsReport.aspx.designer.cs">
       <DependentUpon>DailyPaymentsReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DailyCollectionReportDetails.aspx.cs">
+      <DependentUpon>DailyCollectionReportDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DailyCollectionReportDetails.aspx.designer.cs">
+      <DependentUpon>DailyCollectionReportDetails.aspx</DependentUpon>
     </Compile>
     <Compile Include="VerifyLoginDetails.cs" />
     <Compile Include="DailyCollectionReport.aspx.cs">
@@ -1684,9 +1707,7 @@
     <Folder Include="bower_components\" />
     <Folder Include="dist\" />
     <Folder Include="font-awesome\" />
-    <Folder Include="images\" />
     <Folder Include="jquery\" />
-    <Folder Include="Styles\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
