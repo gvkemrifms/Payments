@@ -4,120 +4,34 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>:: GVK EMRI :DCP ::</title>
+    <title>:: GVK EMRI :DCP ::</title>   
     <script src="scripts/jquery-3.3.1.min.js"></script>
     <script src="scripts/jquery-ui-1.12.1.min.js"></script>
-    <link href="Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
-    <link href="css/TextBoxCssStyles.css" rel="stylesheet" />
+     <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/Forms_style.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
     <script src="scripts/select2.full.min.js"></script>
     <link href="scripts/select2.min.css" rel="stylesheet" />
-             <link href="css/bootstrap.min.css" rel="stylesheet" />  
-    <link href="Styles/css/styles.css" rel="stylesheet" />
-
-    <style type="text/css">
-    body
-    {
-        font-family: Arial;
-        font-size:13px;
-    }
-    .main_menu
-    {
-        width: 150px;
-        background-color: #8AE0F2;
-        color: #000;
-        text-align: center;
-        height: 30px;
-        line-height: 30px;
-        margin-right: 10px;
-        margin-top:10px;
-        display: block;
-    }
-    .level_menu
-    {
-        width: 140px;
-        background-color: black;
-        color: white;
-        text-align: center;
-        height: 30px;
-        line-height: 30px;
-        margin-top: 5px;
-    }
-    .selected
-    {
-        background-color: #852B91;
-        color: #fff;
-    }
-</style>
-    <asp:ContentPlaceHolder id="head" runat="server"> 
+    <link href="css/TextBoxCssStyles.css" rel="stylesheet" />
+    <link href="Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+    <asp:ContentPlaceHolder id="head" runat="server">
     </asp:ContentPlaceHolder>
 </head>
 <body style="height:100%;width:100%">
- <%--    <asp:SiteMapPath ID="SiteMapPath1" Runat="server">
-            <PathSeparatorTemplate>
-                <asp:Image ID="Image1" Runat="server" ImageUrl="~/img/gvk-emri.jpg" ImageAlign="left" style="margin-top:1px" /> />
-            </PathSeparatorTemplate>            
-        </asp:SiteMapPath>
-    <br />--%>
-    <div style="background-color:black;color:white;margin-top:-40px;overflow:unset">
-<img src="img/gvk-emri.jpg" alt="Gvk" style="margin-top:-10px" />
-<div align="center" style="margin-top:-50px;">
-    <h3 style="color:white">Daily Payments And Collection Report</h3>
-</div>
-    
-    <form id="form1" runat="server">    
-        
-        <div id="sidebar-menu">
-            <asp:SiteMapDataSource ID="SiteMapDataSource1" runat="server" ShowStartingNode="false"/>
-
-<asp:Menu ID="Menu" runat="server" DataSourceID="SiteMapDataSource1" BackColor="#B5C7DE" DynamicHorizontalOffset="2" Font-Names="Verdana" Font-Size="0.8em" ForeColor="#284E98" Orientation="Horizontal"
-    OnMenuItemDataBound="Menu_MenuItemDataBound"   StaticSubMenuIndent="16px" >
-   <DynamicHoverStyle BackColor="#284E98" ForeColor="White" />
-    <DynamicMenuItemStyle HorizontalPadding="5px" VerticalPadding="2px" />
-    <DynamicMenuStyle BackColor="#B5C7DE" />
-    <DynamicSelectedStyle BackColor="#507CD1" />
-    <LevelMenuItemStyles>
-        <asp:MenuItemStyle CssClass="main_menu" />
-        <asp:MenuItemStyle CssClass="level_menu" />
-    </LevelMenuItemStyles>
-    <StaticHoverStyle BackColor="#284E98" ForeColor="White" />
-    <StaticMenuItemStyle HorizontalPadding="5px" VerticalPadding="2px" />
-    <StaticSelectedStyle BackColor="#507CD1" />
-
-</asp:Menu>
-        <hr />
-                    <%--    <div class="menu_section" class="main_menu_side hidden-print main_menu">
-                            <h3>Daily Collection And Payment Report</h3>
-                            <ul class="nav side-menu">
-                                <li>
-                                    <ul class="nav child_menu">
-
-                                        <li style="color:red;font-family:'Times New Roman', Times, serif;"  ><a href="DailyCollectionReport.aspx">Daily Collection Report</a>
-                                        </li>
-                                        <li style="color:red;font-family:'Times New Roman', Times, serif;"><a href="DailyPaymentsReport.aspx">Daily Payments Report</a>
-                                        </li>                                       
-                                    </ul>
-                                </li>
-                                </ul>
-                        </div>--%>
-
-
-                   </div>   
-    </div>
-
+    <form id="form1" runat="server">       
         <table style="width:96%;height:100%;margin-left:2%;">
-            <tr>
-                <td>
+            <tr><td><div>
+        <asp:ContentPlaceHolder id="ContentPlaceHolder" runat="server">       
+        </asp:ContentPlaceHolder>
+    </div></td></tr>
+            <tr><td>
                 <div style="width:100%;height:100%;">
                 <asp:ContentPlaceHolder id="MainContent" runat="server">
                  </asp:ContentPlaceHolder>
                     </div>
                 </td></tr>
-        </table> 
-           
-        <asp:TreeView ID="TreeView1" runat="server" DataSourceID="SiteMapDataSource1">
-        </asp:TreeView>
-           
+        </table>
+    
     </form>
-
 </body>
 </html>

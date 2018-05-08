@@ -8,12 +8,43 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace DailyCollectionAndPayments
 {
     public class Helper
     {
+        public void FillDropDownHelperMethodWithSp1(string commandText, string textFieldValue = null, string valueField = null, DropDownList dropDownValue = null, DropDownList dropDownValue1 = null, string parameterValue = null, string uid = null, string parameterValue1 = null, GridView gvCollections = null)
+        {
+            string CONN_STRING = ConfigurationManager.AppSettings["GvkEmriCon"];
+            var conn = new MySqlConnection(CONN_STRING);
+            var ds = new DataSet();
+            conn.Open();
+            var cmd = new MySqlCommand { Connection = conn, CommandType = CommandType.StoredProcedure, CommandText = commandText };
+            if (dropDownValue != null)
+            {
+                if (parameterValue != null)
+                    cmd.Parameters.AddWithValue(parameterValue, Convert.ToInt32(dropDownValue.SelectedValue));
+                if (parameterValue1 != null)
+                    cmd.Parameters.AddWithValue(parameterValue1,Convert.ToInt32(dropDownValue1.SelectedValue));
+                var da = new MySqlDataAdapter(cmd);
+                da.Fill(ds);
+                var dt = ds.Tables[0];
+                if (dt.Rows.Count > 0)
+                {
+                    gvCollections.DataSource = dt;
+                    gvCollections.DataBind();
+                }
+                else
+                {
+                    gvCollections.DataSource = null;
+                    gvCollections.DataBind();
+                }
+
+            }
+           
+        }
         private static void CommonMethod(string textFieldValue, string valueField, DropDownList dropDownValue, DataSet ds, MySqlCommand cmd)
         {
             var da = new MySqlDataAdapter(cmd);
@@ -310,6 +341,21 @@ namespace DailyCollectionAndPayments
                 var da = new MySqlDataAdapter(cmd);
                 da.Fill(ds);
             return ds;
+        }
+
+        public void LoadExcelSpreadSheet(Page page, Panel panel = null, string fileName = null, GridView gridView = null)
+        {
+            page.Response.ClearContent();
+            page.Response.AddHeader("content-disposition", "attachment; filename=" + fileName);
+            page.Response.ContentType = "application/excel";
+            var sw = new StringWriter();
+            var htw = new HtmlTextWriter(sw);
+            if (gridView != null)
+                gridView.RenderControl(htw);
+            else
+                panel.RenderControl(htw);
+            page.Response.Write(sw.ToString());
+            page.Response.End();
         }
 
     }

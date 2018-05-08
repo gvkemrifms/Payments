@@ -6,6 +6,16 @@
      
 
     <script type="text/javascript"> 
+         $(function () {
+            $('#<%= ddlState.ClientID %>').select2({
+                disable_search_threshold: 5, search_contains: true, minimumResultsForSearch: 2,
+                placeholder: "Select an option"
+            });
+              $('#<%= ddlProject.ClientID %>').select2({
+                disable_search_threshold: 5, search_contains: true, minimumResultsForSearch: 2,
+                placeholder: "Select an option"
+            });
+        });
         function UserDeleteConfirmation() {
             if (confirm("Are you sure you want to delete this user?"))
                 return true;
@@ -62,9 +72,14 @@
             return false;
         }
     </script>
-  <legend align="center" style="color:brown;margin-top:-50px"> Daily Collection</legend>  
-          <br />
-           
+<table align="center">
+    <tr>
+        <td>
+            <h4 style="color:brown;margin-top:25px">Daily Collections</h4>
+        </td>
+    </tr>
+</table>
+    <br />
     <table align="center" style="margin-top:20px">
         <tr>
             <td>
@@ -150,28 +165,22 @@
                         <asp:TextBox ID="txt_Name" runat="server" Text='<%#Eval("project_name") %>'></asp:TextBox>  
                     </EditItemTemplate>  
                 </asp:TemplateField>  
-                <asp:TemplateField HeaderText="USER">  
-                    <ItemTemplate>  
-                        <asp:Label ID="lbl_City" runat="server" Text='<%#Eval("user_name") %>'></asp:Label>  
-                    </ItemTemplate>  
-                    <EditItemTemplate>  
-                        <asp:TextBox ID="txt_City" runat="server" Text='<%#Eval("user_name") %>'></asp:TextBox>  
-                    </EditItemTemplate>  
-                </asp:TemplateField>  
-             <asp:TemplateField HeaderText="AMOUNT">  
-                    <ItemTemplate>  
-                        <asp:Label ID="lblamount" runat="server" Text='<%#Eval("amount") %>'></asp:Label>  
-                    </ItemTemplate>  
-                    <EditItemTemplate>  
-                        <asp:TextBox ID="txtamount" runat="server" Text='<%#Eval("amount") %>'></asp:TextBox>  
-                    </EditItemTemplate>  
-                </asp:TemplateField>  
+                
+            
                   <asp:TemplateField HeaderText="DATE">  
                     <ItemTemplate>  
                         <asp:Label ID="lbldate" runat="server" Text='<%#Eval("date") %>'></asp:Label>  
                     </ItemTemplate>  
                     <EditItemTemplate>  
                         <asp:TextBox ID="txtdate" runat="server" Text='<%#Eval("date") %>'></asp:TextBox>  
+                    </EditItemTemplate>  
+                </asp:TemplateField>  
+              <asp:TemplateField HeaderText="AMOUNT">  
+                    <ItemTemplate>  
+                        <asp:Label ID="lblamount" runat="server" Text='<%#Eval("amount") %>'></asp:Label>  
+                    </ItemTemplate>  
+                    <EditItemTemplate>  
+                        <asp:TextBox ID="txtamount" runat="server" Text='<%#Eval("amount") %>'></asp:TextBox>  
                     </EditItemTemplate>  
                 </asp:TemplateField>  
              <asp:TemplateField HeaderText="ENTRY DATE">  

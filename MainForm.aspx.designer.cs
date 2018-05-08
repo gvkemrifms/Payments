@@ -10,60 +10,51 @@
 namespace DailyCollectionAndPayments {
     
     
-    public partial class CollectionReports {
+    public partial class MainForm {
         
         /// <summary>
-        /// lblMonth control.
+        /// gvkemriimg control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMonth;
+        protected global::System.Web.UI.WebControls.Image gvkemriimg;
         
         /// <summary>
-        /// ddlMonth control.
+        /// LblUserName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlMonth;
+        protected global::System.Web.UI.WebControls.Label LblUserName;
         
         /// <summary>
-        /// lblYear control.
+        /// btnLogout control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblYear;
+        protected global::System.Web.UI.WebControls.Button btnLogout;
         
         /// <summary>
-        /// ddlYear control.
+        /// menuBar control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlYear;
+        protected global::System.Web.UI.WebControls.Menu menuBar;
         
         /// <summary>
-        /// btnShowReport control.
+        /// uriIFrame control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnShowReport;
-        
-        /// <summary>
-        /// gvCollectionReport control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvCollectionReport;
+        protected global::System.Web.UI.HtmlControls.HtmlIframe uriIFrame;
     }
 }

@@ -1561,6 +1561,7 @@
     <Content Include="js\ui\jquery-ui.css" />
     <Content Include="js\ui\jquery-ui.js" />
     <Content Include="Login.aspx" />
+    <Content Include="MainForm.aspx" />
     <Content Include="packages.config" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1688,6 +1689,13 @@
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MainForm.aspx.cs">
+      <DependentUpon>MainForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MainForm.aspx.designer.cs">
+      <DependentUpon>MainForm.aspx</DependentUpon>
     </Compile>
     <Compile Include="VerifyLoginDetails.cs" />
     <Compile Include="DailyCollectionReport.aspx.cs">
