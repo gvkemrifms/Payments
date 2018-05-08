@@ -6,6 +6,12 @@
      
 
     <script type="text/javascript"> 
+        function UserDeleteConfirmation() {
+            if (confirm("Are you sure you want to delete this user?"))
+                return true;
+            else
+                return false;
+        }
         $(function () {
             $('#<%=txtDate.ClientID%>').datepicker({
                 showOn:'both',
@@ -62,7 +68,7 @@
     <table align="center" style="margin-top:20px">
         <tr>
             <td>
-                Select State<span style="color:red">*</span>
+                State<span style="color:red">*</span>
             </td>
             <td>
                 <asp:DropDownList ID="ddlState" runat="server" OnSelectedIndexChanged="ddlState_SelectedIndexChanged" AutoPostBack="true" Width="150px"></asp:DropDownList>
@@ -72,7 +78,7 @@
          
         <tr>
             <td>
-                Select Project<span style="color:red;">*</span>
+                 Project<span style="color:red;">*</span>
             </td>
             <td>
                 <asp:DropDownList ID="ddlProject"  runat="server"  Width="150px"></asp:DropDownList>
@@ -82,7 +88,7 @@
       
         <tr>
             <td>
-                Select Date<span style="color:red">*</span>
+                 Date<span style="color:red">*</span>
             </td>
             <td>
                 <asp:TextBox ID="txtDate" runat="server" onkeypress="return false" oncut="return false" onpaste="return false" ></asp:TextBox>
@@ -91,7 +97,7 @@
  
         <tr>
             <td>
-                Select Amount<span style="color:red">*</span>
+                 Amount<span style="color:red">*</span>
             </td>
             <td>
                 <asp:TextBox ID="txtAmount" runat="server" placeholder="Enter Amount" onkeypress="return numericOnly(this)"></asp:TextBox>
@@ -111,7 +117,7 @@
 
     
  <div align="center" style="margin-top:20px;width:1000px;margin-left:100px" >
-     <asp:GridView ID="gvDailyPayments" runat="server" BackColor="White" AutoGenerateColumns="False" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="3" OnSelectedIndexChanged="gvDailyPayments_SelectedIndexChanged" Width="1000px"  >
+     <asp:GridView ID="gvDailyPayments" runat="server" BackColor="White" AutoGenerateColumns="False" OnRowDeleting="gvDailyPayments_RowDeleting" OnSelectedIndexChanging="gvDailyPayments_SelectedIndexChanging" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="3"  OnSelectedIndexChanged="gvDailyPayments_SelectedIndexChanged" OnRowEditing="gvDailyPayments_RowEditing" OnRowUpdating="gvDailyPayments_RowUpdating" Width="1000px"  >
          <FooterStyle BackColor="White" ForeColor="#000066" />
          <HeaderStyle BackColor="#006699" Font-Bold="True" ForeColor="White" />
          <PagerStyle BackColor="White" ForeColor="#000066" HorizontalAlign="Left" />
@@ -122,12 +128,21 @@
          <SortedDescendingCellStyle BackColor="#CAC9C9" />
          <SortedDescendingHeaderStyle BackColor="#00547E" />
          <Columns>  
-                <asp:TemplateField HeaderText="state_name">  
+             <asp:TemplateField HeaderText="CID">  
                     <ItemTemplate>  
-                        <asp:Label ID="lbl_ID" runat="server" Text='<%#Eval("state_name") %>'></asp:Label>  
+                        <asp:Label ID="C_ID" runat="server" Text='<%#Eval("c_id") %>'></asp:Label>  
                     </ItemTemplate>  
                 </asp:TemplateField>  
-                <asp:TemplateField HeaderText="project_name">  
+                <asp:TemplateField HeaderText="State">  
+                    <ItemTemplate>  
+                        <asp:Label ID="lbl_ID" runat="server" Text='<%#Eval("state_name") %>'></asp:Label>  
+
+                    </ItemTemplate>
+                      <EditItemTemplate>  
+                        <asp:TextBox ID="txt_StateName" runat="server" Text='<%#Eval("state_name") %>'></asp:TextBox>  
+                    </EditItemTemplate>  
+                </asp:TemplateField>  
+                <asp:TemplateField HeaderText="PROJECT">  
                     <ItemTemplate>  
                         <asp:Label ID="lbl_Name" runat="server" Text='<%#Eval("project_name") %>'></asp:Label>  
                     </ItemTemplate>  
@@ -135,7 +150,7 @@
                         <asp:TextBox ID="txt_Name" runat="server" Text='<%#Eval("project_name") %>'></asp:TextBox>  
                     </EditItemTemplate>  
                 </asp:TemplateField>  
-                <asp:TemplateField HeaderText="user_name">  
+                <asp:TemplateField HeaderText="USER">  
                     <ItemTemplate>  
                         <asp:Label ID="lbl_City" runat="server" Text='<%#Eval("user_name") %>'></asp:Label>  
                     </ItemTemplate>  
@@ -143,7 +158,7 @@
                         <asp:TextBox ID="txt_City" runat="server" Text='<%#Eval("user_name") %>'></asp:TextBox>  
                     </EditItemTemplate>  
                 </asp:TemplateField>  
-             <asp:TemplateField HeaderText="user_name">  
+             <asp:TemplateField HeaderText="AMOUNT">  
                     <ItemTemplate>  
                         <asp:Label ID="lblamount" runat="server" Text='<%#Eval("amount") %>'></asp:Label>  
                     </ItemTemplate>  
@@ -151,7 +166,7 @@
                         <asp:TextBox ID="txtamount" runat="server" Text='<%#Eval("amount") %>'></asp:TextBox>  
                     </EditItemTemplate>  
                 </asp:TemplateField>  
-                  <asp:TemplateField HeaderText="date">  
+                  <asp:TemplateField HeaderText="DATE">  
                     <ItemTemplate>  
                         <asp:Label ID="lbldate" runat="server" Text='<%#Eval("date") %>'></asp:Label>  
                     </ItemTemplate>  
@@ -159,7 +174,7 @@
                         <asp:TextBox ID="txtdate" runat="server" Text='<%#Eval("date") %>'></asp:TextBox>  
                     </EditItemTemplate>  
                 </asp:TemplateField>  
-             <asp:TemplateField HeaderText="createdon">  
+             <asp:TemplateField HeaderText="ENTRY DATE">  
                     <ItemTemplate>  
                         <asp:Label ID="lblcreatedon" runat="server" Text='<%#Eval("createdon") %>'></asp:Label>  
                     </ItemTemplate>  
@@ -167,11 +182,20 @@
                         <asp:TextBox ID="txtdate" runat="server" Text='<%#Eval("createdon") %>'></asp:TextBox>  
                     </EditItemTemplate>  
                 </asp:TemplateField> 
-           
- 
-            <asp:CommandField  ShowSelectButton="true" ControlStyle-Width="20px" ControlStyle-Height="20px" ControlStyle-ForeColor="Blue" SelectText="Edit" ButtonType="Image" SelectImageUrl="~/images/edit1.png"  />
-             <asp:CommandField ShowDeleteButton="true" ControlStyle-Width="20px" ControlStyle-Height="20px"  ControlStyle-ForeColor="Blue" SelectText="Delete"  ButtonType="Image" SelectImageUrl="~/images/edit1.png" />
+           <asp:TemplateField HeaderText="Edit">
+                                        <ItemTemplate>
+                                           <asp:ImageButton ID="btnEdit" runat="server" CausesValidation="false" Width="20px" CommandName="" ImageUrl="~/images/edit1.png" Text="" OnClick="btnEdit_Click"  ToolTip="" />
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+              <asp:TemplateField HeaderText="Delete">
+                                        <ItemTemplate>
+                                           <asp:ImageButton ID="btnDelete" runat="server" CausesValidation="false" Width="20px" CommandName="Delete" ImageUrl="~/images/delete.png" Text="" OnClick="btnDelete_Click" OnClientClick="return UserDeleteConfirmation();"   ToolTip=""  />
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+
+<%--<asp:CommandField  ShowSelectButton="true" ControlStyle-Width="20px" ControlStyle-Height="20px" ControlStyle-ForeColor="Blue" SelectText="Edit" ButtonType="Image" SelectImageUrl="~/images/edit1.png"  />--%>        
      </Columns> 
+
      </asp:GridView>
  </div>
 </asp:Content>

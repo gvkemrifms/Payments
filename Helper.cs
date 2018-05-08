@@ -66,7 +66,27 @@ namespace DailyCollectionAndPayments
                 }
             }
         }
-           
+
+        internal int UpdatePaymentsDetailsDetails(DateTime dateTime, int v1, int v2, decimal v3, int v4, int v5)
+        {
+            int num = 0;
+            MySqlCommand cmd = new MySqlCommand();
+            try
+            {
+                cmd.Parameters.AddWithValue("@pdate", dateTime);
+                cmd.Parameters.AddWithValue("@projid", v1);
+                cmd.Parameters.AddWithValue("@paytid", v2);
+                cmd.Parameters.AddWithValue("@amt", v3);
+                cmd.Parameters.AddWithValue("@uid", v4);
+                cmd.Parameters.AddWithValue("@pid", v5);
+                num = ExecuteNonQuery(cmd, CommandType.StoredProcedure, "update_payments");
+            }
+            catch (Exception ex)
+            {
+                ErrorsEntry(ex);
+            }
+            return num;
+        }
         public void FillDropDownHelperMethod(string query, string textFieldValue, string valueField, DropDownList dropdownId)
         {
             using (var con = new MySqlConnection(ConfigurationManager.AppSettings["GvkEmriCon"]))
@@ -198,6 +218,25 @@ namespace DailyCollectionAndPayments
                 cmd.Parameters.AddWithValue("@amouont", amount);
                 cmd.Parameters.AddWithValue("@uid", uid);
                 num = ExecuteNonQuery(cmd, CommandType.StoredProcedure, "insert_collection");
+            }
+            catch (Exception ex)
+            {
+                ErrorsEntry(ex);
+            }
+            return num;
+        }
+        public int UpdateCollectionDetails( int projectId, DateTime DCDate, decimal amount, int uid,int custid)
+        {
+            int num = 0;
+            MySqlCommand cmd = new MySqlCommand();
+            try
+            {
+                cmd.Parameters.AddWithValue("@projid", projectId);
+                cmd.Parameters.AddWithValue("@ddate", DCDate);
+                cmd.Parameters.AddWithValue("@amt", amount);
+                cmd.Parameters.AddWithValue("@uid", uid);
+                cmd.Parameters.AddWithValue("@cid", custid);
+                num = ExecuteNonQuery(cmd, CommandType.StoredProcedure, "update_collections");
             }
             catch (Exception ex)
             {

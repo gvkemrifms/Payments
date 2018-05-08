@@ -132,6 +132,7 @@
     <Content Include="bin\roslyn\System.Reflection.Metadata.dll" />
     <Content Include="bin\roslyn\vbc.exe" />
     <Content Include="bin\roslyn\VBCSCompiler.exe" />
+    <Content Include="CollectionReports.aspx" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
     <Content Include="Content\themes\base\autocomplete.css" />
@@ -1536,6 +1537,7 @@
     <Content Include="css\themes.css" />
     <Content Include="DailyPaymentsReport.aspx" />
     <Content Include="DailyCollectionReportDetails.aspx" />
+    <Content Include="Default.aspx" />
     <Content Include="images\delete.png" />
     <Content Include="images\deleteicon.png" />
     <Content Include="images\edit1.png" />
@@ -1659,6 +1661,13 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CollectionReports.aspx.cs">
+      <DependentUpon>CollectionReports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CollectionReports.aspx.designer.cs">
+      <DependentUpon>CollectionReports.aspx</DependentUpon>
+    </Compile>
     <Compile Include="DailyPaymentsReport.aspx.cs">
       <DependentUpon>DailyPaymentsReport.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1672,6 +1681,13 @@
     </Compile>
     <Compile Include="DailyCollectionReportDetails.aspx.designer.cs">
       <DependentUpon>DailyCollectionReportDetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="VerifyLoginDetails.cs" />
     <Compile Include="DailyCollectionReport.aspx.cs">

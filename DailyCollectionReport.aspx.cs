@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 
 
@@ -50,7 +52,7 @@ namespace DailyCollectionAndPayments
             try
             {
 
-                _helper.FillDropDownHelperMethodWithSp("userCollection_grid", null, null, null, null, "@uid", _userId, null, gvDailyPayments);
+                _helper.FillDropDownHelperMethodWithSp("userCollectiontest_grid", null, null, null, null, "@uid", _userId, null, gvDailyPayments);
             }
             catch (Exception ex)
             {
@@ -131,9 +133,19 @@ namespace DailyCollectionAndPayments
 
         protected void btnSave_Click(object sender, EventArgs e)
         {
-            if(btnSave.Text=="Save")
-            _helper.InsertCollectionDetails((Convert.ToInt32(ddlState.SelectedValue)), Convert.ToInt32(ddlProject.SelectedValue),Convert.ToDateTime(txtDate.Text), Convert.ToDecimal(txtAmount.Text), Convert.ToInt32(_userId));
+            if (btnSave.Text == "Save")
+            {
+                _helper.InsertCollectionDetails((Convert.ToInt32(ddlState.SelectedValue)), Convert.ToInt32(ddlProject.SelectedValue), Convert.ToDateTime(txtDate.Text), Convert.ToDecimal(txtAmount.Text), Convert.ToInt32(_userId));
+                Show("Successfully Inserted");
+            }
+            else
+            {
+                string cid = Session["IdCol"].ToString();
+                int result = _helper.UpdateCollectionDetails(Convert.ToInt32(ddlProject.SelectedValue), Convert.ToDateTime(txtDate.Text), Convert.ToDecimal(txtAmount.Text), Convert.ToInt32(_userId), Convert.ToInt32(cid));
 
+                Show("Successfully Updated");
+            }
+            
             ClearControls();
             BindGridDetails();
         }
@@ -144,6 +156,7 @@ namespace DailyCollectionAndPayments
             txtAmount.Text = "";
             ddlState.ClearSelection();
             ddlProject.ClearSelection();
+            btnSave.Text = "Save";
            
         }
 
@@ -155,13 +168,68 @@ namespace DailyCollectionAndPayments
         protected void gvDailyPayments_SelectedIndexChanged(object sender, EventArgs e)
         {
 
-            var ds = _helper.ReturnDS("userCollection_grid", "@uid", _userId);
-            ddlState.SelectedItem.Text = ds.Tables[0].Rows[0]["state_name"].ToString();
-           // ddlProject.SelectedItem.Text = ds.Tables[0].Rows[0]["project_name"].ToString();
-            txtDate.Text = Convert.ToString(ds.Tables[0].Rows[0]["date"]);
-            txtAmount.Text = Convert.ToString(ds.Tables[0].Rows[0]["amount"]);
-            btnSave.Text = "Update";
           
+        }
+
+        protected void gvDailyPayments_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            GridViewRow row = gvDailyPayments.Rows[e.NewEditIndex];
+            Label usernamelable = (Label)row.FindControl("C_ID");
+            string id = usernamelable.Text;
+        }
+
+        protected void btnEdit_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            GridViewRow row1 = (GridViewRow)((ImageButton)sender).NamingContainer;
+            string cid = ((Label)gvDailyPayments.Rows[row1.RowIndex].FindControl("C_ID")).Text;
+            Session["IdCol"] = cid;
+            var ds = _helper.ReturnDS("userCollectiontest_grid", "@uid", _userId);
+           foreach(DataRow row in ds.Tables[0].Rows)
+            {
+                var custid = row["c_id"].ToString();
+                if (custid == cid)
+                {
+                  
+                    
+                    ddlState.SelectedItem.Text = row["state_name"].ToString();
+                    
+                    if (ddlProject.SelectedIndex == -1)
+                        ddlProject.Items.Insert(0, "--Select--");
+                    txtDate.Text = Convert.ToString(row["date"]);
+                    txtAmount.Text = Convert.ToString(row["amount"]);
+                    btnSave.Text = "Update";
+                }
+            }
+            
+        }
+
+        protected void btnDelete_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+        }
+
+        protected void gvDailyPayments_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        {
+            GridViewRow row = gvDailyPayments.Rows[e.RowIndex];
+            Label usernamelable = (Label)row.FindControl("C_ID");
+            string id = usernamelable.Text;
+            string query = "delete  from t_collections where c_id='" + id + "'";
+          int i=  _helper.ExecuteInsertStatement(query);
+            if(i>0)
+                BindGridDetails();
+        }
+
+        protected void gvDailyPayments_SelectedIndexChanging(object sender, GridViewSelectEventArgs e)
+        {
+
+        }
+
+        protected void gvDailyPayments_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            
+        }
+        public void Show(string message)
+        {
+            ScriptManager.RegisterStartupScript(this, GetType(), "msg", "alert('" + message + "');", true);
         }
     }
 }
