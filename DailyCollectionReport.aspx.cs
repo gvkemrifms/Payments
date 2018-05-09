@@ -85,7 +85,7 @@ namespace DailyCollectionAndPayments
             {
                 string cid = Session["IdCol"].ToString();
                 int result = _helper.UpdateCollectionDetails(Convert.ToInt32(ddlProject.SelectedValue), Convert.ToDateTime(txtDate.Text), Convert.ToDecimal(txtAmount.Text), Convert.ToInt32(_userId), Convert.ToInt32(cid));
-
+                btnSave.Text = "Save";
                 Show("Successfully Updated");
             }
 
@@ -116,9 +116,7 @@ namespace DailyCollectionAndPayments
 
         protected void gvDailyPayments_RowEditing(object sender, GridViewEditEventArgs e)
         {
-            GridViewRow row = gvDailyPayments.Rows[e.NewEditIndex];
-            Label usernamelable = (Label)row.FindControl("C_ID");
-            string id = usernamelable.Text;
+         
         }
 
         protected void btnEdit_Click(object sender, System.Web.UI.ImageClickEventArgs e)
@@ -127,17 +125,19 @@ namespace DailyCollectionAndPayments
             string cid = ((Label)gvDailyPayments.Rows[row1.RowIndex].FindControl("C_ID")).Text;
             Session["IdCol"] = cid;
             var ds = _helper.ReturnDS("userCollectiontest_grid", "@uid", _userId);
+            //var drpdi = ds.Tables[0].Select("IdCol=" + e1.CommandArgument);
+            ClearControls();
             foreach (DataRow row in ds.Tables[0].Rows)
             {
                 var custid = row["c_id"].ToString();
                 if (custid == cid)
                 {
-
-
-                    ddlState.SelectedItem.Text = row["state_name"].ToString();
-
-                    if (ddlProject.SelectedIndex == -1)
-                        ddlProject.Items.Insert(0, "--Select--");
+                    ClearControls();
+                    //  ddlState.SelectedItem.Text = row["state_name"].ToString();
+                    ddlState.Items.FindByText(row["state_name"].ToString()).Selected=true;
+                    _helper.FillDropDownHelperMethodWithSp("userbased_projects", "project_name", "project_id", ddlState, ddlProject, "@uid", _userId, "@stid");
+                    ddlProject.Items.FindByText(row["project_name"].ToString()).Selected = true;
+                    //ddlState.Items.FindByValue(row["project_name"].ToString()).Selected = true;
                     txtDate.Text = Convert.ToString(row["date"]);
                     txtAmount.Text = Convert.ToString(row["amount"]);
                     btnSave.Text = "Update";

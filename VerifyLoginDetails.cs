@@ -16,9 +16,9 @@ public class VerifyLoginDetails
         {
             MySqlCommand cmd = new MySqlCommand();
             string query = " SELECT au.`user_id`,`user_name`, ar.`role_id`, ar.`role_name`   "
-                    + "     FROM  `finacne`.`m_users`  au "
-                    + "     JOIN `finacne`.`m_user_role` aur ON au.`user_id`= aur.`user_id`   "
-                    + "     JOIN `finacne`.`m_role` ar ON aur.`role_id`= ar.`role_id`  "
+                    + "     FROM  `finance`.`m_users`  au "
+                    + "     JOIN `finance`.`m_user_role` aur ON au.`user_id`= aur.`user_id`   "
+                    + "     JOIN `finance`.`m_role` ar ON aur.`role_id`= ar.`role_id`  "
                     + "     where user_name='" + UserNAme + "' and password='" + Password + "'";
             MySqlDataReader sdr = ExecuteReader(cmd, CommandType.Text, query);
             dtLoginDetails.Load(sdr);

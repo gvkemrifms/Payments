@@ -26,10 +26,8 @@
             }
         $(function () {
          $('#<%=txtDate.ClientID%>').datepicker({
-                showOn:'both',
                 changeMonth:true,
                 changeYear:true,
-                buttonText:'Cal',
                 maxDate: 0
             });
              $('#<%= ddlState.ClientID %>').select2({
@@ -146,7 +144,7 @@
     </table>
     <br />
     <div align="center" style="margin-top:25px;width:1000px;margin-left:100px">
-     <asp:GridView ID="gvPayments" runat="server" BackColor="White" AutoGenerateColumns="False" OnRowDeleting="gvPayments_RowDeleting"  BorderColor="#CCCCCC" BorderStyle="None" OnRowEditing="gvPayments_RowEditing" BorderWidth="1px" CellPadding="3" OnSelectedIndexChanged="gvPayments_SelectedIndexChanged" GridLines="Both" width="1000px" >
+        <asp:GridView ID="gvPayments" runat="server" BackColor="White" AutoGenerateColumns="False" OnRowDeleting="gvPayments_RowDeleting"  BorderColor="#CCCCCC" BorderStyle="None" OnRowEditing="gvPayments_RowEditing" BorderWidth="1px" CellPadding="3" OnSelectedIndexChanged="gvPayments_SelectedIndexChanged" GridLines="Both" width="1000px" >
             <FooterStyle BackColor="White" ForeColor="#000066" />
             <HeaderStyle BackColor="#006699" Font-Bold="True" ForeColor="White" />
             <PagerStyle BackColor="White" ForeColor="#000066" HorizontalAlign="Left" />
@@ -175,12 +173,20 @@
                         <asp:TextBox ID="txtProjectName" runat="server" Text='<%#Eval("project_name") %>'></asp:TextBox>  
                     </EditItemTemplate>  
                 </asp:TemplateField>  
-                <asp:TemplateField HeaderText="PAYMENT DATE">  
+     <asp:TemplateField HeaderText="PAYMENT TYPE">  
                     <ItemTemplate>  
-                        <asp:Label ID="lblUserName" runat="server" Text='<%#Eval("pay_date") %>'></asp:Label>  
+                        <asp:Label ID="lblPaymentType" runat="server" Text='<%#Eval("payment_name") %>'></asp:Label>  
                     </ItemTemplate>  
                     <EditItemTemplate>  
-                        <asp:TextBox ID="txtUserName" runat="server" Text='<%#Eval("pay_date") %>'></asp:TextBox>  
+                        <asp:TextBox ID="txtPaymentType" runat="server" Text='<%#Eval("payment_name") %>'></asp:TextBox>  
+                    </EditItemTemplate>  
+                </asp:TemplateField>  
+                <asp:TemplateField HeaderText="PAYMENT DATE">  
+                    <ItemTemplate>  
+                        <asp:Label ID="lblPayDate" runat="server" Text='<%#Eval("pay_date") %>'></asp:Label>  
+                    </ItemTemplate>  
+                    <EditItemTemplate>  
+                        <asp:TextBox ID="txtPayDate" runat="server" Text='<%#Eval("pay_date") %>'></asp:TextBox>  
                     </EditItemTemplate>  
                 </asp:TemplateField>  
              <asp:TemplateField HeaderText="AMOUNT">  

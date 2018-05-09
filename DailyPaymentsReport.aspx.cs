@@ -87,7 +87,7 @@ namespace DailyCollectionAndPayments
                 {
                     string pid = Session["IdCol"].ToString();
                     int result = _helper.UpdatePaymentsDetailsDetails(Convert.ToDateTime(txtDate.Text), Convert.ToInt32(ddlProject.SelectedValue), Convert.ToInt32(ddlSelectPayment.SelectedValue), Convert.ToDecimal(txtAmount.Text), Convert.ToInt32(_userId),Convert.ToInt32(pid));
-
+                    btnSave.Text = "Save";
                     Show("Successfully Updated");
                 }
                 catch(Exception ex)
@@ -148,11 +148,11 @@ namespace DailyCollectionAndPayments
                 if (custid == pid)
                 {
 
-
-                    ddlState.SelectedItem.Text = row["state_name"].ToString();
-
-                    if (ddlProject.SelectedIndex == -1)
-                        ddlProject.Items.Insert(0, "--Select--");
+                    ClearControls();
+                    ddlState.Items.FindByText(row["state_name"].ToString()).Selected = true;
+                    _helper.FillDropDownHelperMethodWithSp("userbased_projects","project_name","project_id",ddlState,ddlProject,"@uid",_userId,"@stid");
+                    ddlProject.Items.FindByText(row["project_name"].ToString()).Selected = true;
+                    ddlSelectPayment.Items.FindByText(row["payment_name"].ToString()).Selected = true;
                     txtDate.Text = Convert.ToString(row["createdon"]);
                     txtAmount.Text = Convert.ToString(row["amount"]);
                     btnSave.Text = "Update";

@@ -11,8 +11,15 @@ namespace DailyCollectionAndPayments
     public partial class CollectionReports : System.Web.UI.Page
     {
         readonly Helper _helper = new Helper();
+        public string _userId;
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["UserId"] == null)
+                Response.Redirect("Login.aspx");
+            else
+            {
+                _userId = (string)Session["UserId"];
+            }
             if (!IsPostBack)
             {
                 BindMonthsDropdown();

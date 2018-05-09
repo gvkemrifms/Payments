@@ -28,8 +28,8 @@ namespace DailyCollectionAndPayments
                 LblUserName.Text = strUserName;
                 MySqlCommand cmd = new MySqlCommand();
                 string query = "SELECT mp.`previlage_id`, mp.`previlage_name`, `parent_previlage_id`, `path`  "
-                        + "     FROM `finacne`.`m_previlage` mp  "
-                        + "     JOIN `finacne`.`m_roleprevilage` ur ON mp.`previlage_id`= ur.`previlage_id`  "
+                        + "     FROM `finance`.`m_previlage` mp  "
+                        + "     JOIN `finance`.`m_roleprevilage` ur ON mp.`previlage_id`= ur.`previlage_id`  "
                         + "     WHERE mp.`is_active`= 1 AND ur.role_id =  " + strRoleid + " ORDER BY order_by ASC; ";
                 MySqlDataReader sdr = ExecuteReader(cmd, CommandType.Text, query);
                 dtMenuItems.Load(sdr);
@@ -85,8 +85,8 @@ namespace DailyCollectionAndPayments
             String strRoleid = Session["RoleId"].ToString();
             MySqlCommand cmd = new MySqlCommand(); 
             string query = " SELECT mp.previlage_id, previlage_name,parent_previlage_id, path  "
-                    + "     FROM `finacne`.m_previlage mp "
-                    + "     JOIN `finacne`.m_roleprevilage mr ON mp.previlage_id = mr.previlage_id "
+                    + "     FROM `finance`.m_previlage mp "
+                    + "     JOIN `finance`.m_roleprevilage mr ON mp.previlage_id = mr.previlage_id "
                     + "     WHERE role_id = " + strRoleid + " ORDER BY order_by ASC; ";
             MySqlDataReader sdr = ExecuteReader(cmd, CommandType.Text, query);
             dtMenuItems.Load(sdr);

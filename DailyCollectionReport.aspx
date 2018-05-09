@@ -24,10 +24,8 @@
         }
         $(function () {
             $('#<%=txtDate.ClientID%>').datepicker({
-                showOn:'both',
                 changeMonth:true,
                 changeYear:true,
-                buttonText:'Cal',
                 maxDate: 0
             });
              $('#<%= ddlState.ClientID %>').select2({

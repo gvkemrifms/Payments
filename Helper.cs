@@ -1,13 +1,10 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -20,6 +17,7 @@ namespace DailyCollectionAndPayments
             string CONN_STRING = ConfigurationManager.AppSettings["GvkEmriCon"];
             var conn = new MySqlConnection(CONN_STRING);
             var ds = new DataSet();
+          
             conn.Open();
             var cmd = new MySqlCommand { Connection = conn, CommandType = CommandType.StoredProcedure, CommandText = commandText };
             if (dropDownValue != null)
@@ -33,6 +31,7 @@ namespace DailyCollectionAndPayments
                 var dt = ds.Tables[0];
                 if (dt.Rows.Count > 0)
                 {
+                    dt.Columns[0].ColumnName = "STATES";
                     gvCollections.DataSource = dt;
                     gvCollections.DataBind();
                 }

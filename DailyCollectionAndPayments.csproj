@@ -1629,6 +1629,7 @@
     <Content Include="css\ionicons-master\scss\_ionicons-icons.scss" />
     <Content Include="css\ionicons-master\scss\_ionicons-variables.scss" />
     <None Include="scripts\jquery-1.12.4.intellisense.js" />
+    <Content Include="PaymentsReport.aspx" />
     <Content Include="scripts\jquery-1.12.4.js" />
     <Content Include="scripts\jquery-1.12.4.min.js" />
     <Content Include="scripts\jquery-1.12.4.min.map" />
@@ -1659,7 +1660,9 @@
     <Content Include="scripts\select2.full.min.js" />
     <Content Include="scripts\select2.min.css" />
     <Content Include="scripts\select2.min.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CollectionReports.aspx.cs">
@@ -1696,6 +1699,13 @@
     </Compile>
     <Compile Include="MainForm.aspx.designer.cs">
       <DependentUpon>MainForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PaymentsReport.aspx.cs">
+      <DependentUpon>PaymentsReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PaymentsReport.aspx.designer.cs">
+      <DependentUpon>PaymentsReport.aspx</DependentUpon>
     </Compile>
     <Compile Include="VerifyLoginDetails.cs" />
     <Compile Include="DailyCollectionReport.aspx.cs">
