@@ -1,4 +1,4 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true"CodeFile="DCP.master.cs"  Inherits="DailyCollectionAndPayments.DCP" %>
+﻿<%@ Master Language="C#" AutoEventWireup="true"  Inherits="DailyCollectionAndPayments.DCP" Codebehind="DCP.master.cs" %>
 
 <!DOCTYPE html>
 

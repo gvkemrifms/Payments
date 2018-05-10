@@ -54,7 +54,7 @@ namespace DailyCollectionAndPayments
         private void BindMonthsDropdown()
         {
             var months = CultureInfo.CurrentCulture.DateTimeFormat.MonthNames;
-            for (int i = 0; i < 13; i++)
+            for (int i = 1; i < 13; i++)
             {
                 ddlMonth.Items.Add(new ListItem(months[i], i.ToString()));
                 
