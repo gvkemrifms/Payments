@@ -4,7 +4,9 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder" runat="server">
 </asp:Content>
-<asp:Content ID="Content3" ContentPlaceHolderID="MainContent" runat="server">
+
+    <asp:Content ID="Content3" ContentPlaceHolderID="MainContent" runat="server">
+   
     <style type="text/css">
         .MenuBar {
             margin-top: -3%;
@@ -102,3 +104,5 @@
         <iframe id="uriIFrame" runat="server" style="height: 100%; width: 100%; border: 0;"></iframe>
     </div>
 </asp:Content>
+
+

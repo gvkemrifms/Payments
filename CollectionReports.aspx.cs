@@ -1,25 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace DailyCollectionAndPayments
 {
-    public partial class CollectionReports : System.Web.UI.Page
+    public partial class CollectionReports : Page
     {
-        readonly Helper _helper = new Helper();
-        public string _userId;
+        private readonly Helper _helper = new Helper();
+        public string UserId;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["UserId"] == null)
                 Response.Redirect("Login.aspx");
             else
-            {
-                _userId = (string)Session["UserId"];
-            }
+                UserId = (string) Session["UserId"];
             if (!IsPostBack)
             {
                 BindMonthsDropdown();
@@ -32,38 +28,27 @@ namespace DailyCollectionAndPayments
         {
             try
             {
-                _helper.FillDropDownHelperMethodWithSp1("report_statewise_daywise", null, null, ddlYear, ddlMonth, "@yr",null, "@mnt", gvCollectionReport);
+                _helper.FillDropDownHelperMethodWithSp1("report_statewise_daywise", null, null, ddlYear, ddlMonth, "@yr", null, "@mnt", gvCollectionReport);
             }
-            catch
+            catch (Exception ex)
             {
-
+                _helper.ErrorsEntry(ex);
             }
         }
 
         private void BindYearDropDown()
         {
-            for (int i = 2010; i <= 2025; i++)
-            {
-                ddlYear.Items.Add(i.ToString());
-
-
-            }
+            for (var i = 2018; i <= 2025; i++) ddlYear.Items.Add(i.ToString());
             ddlYear.SelectedItem.Text = DateTime.Now.Year.ToString();
         }
 
         private void BindMonthsDropdown()
         {
             var months = CultureInfo.CurrentCulture.DateTimeFormat.MonthNames;
-            for (int i = 1; i < 13; i++)
-            {
-                ddlMonth.Items.Add(new ListItem(months[i], i.ToString()));
-                
-            }
+            for (var i = 0; i < 13; i++) ddlMonth.Items.Add(new ListItem(months[i], (i + 1).ToString()));
             ddlMonth.Items.Insert(0, "--Select--");
-          string month=  ddlMonth.Items.FindByText(DateTime.Today.ToString("MMMM")).ToString();
+            var month = ddlMonth.Items.FindByText(DateTime.Today.ToString("MMMM")).ToString();
             ddlMonth.Items.FindByText(month).Selected = true;
-
-
         }
 
         protected void btnShowReport_Click(object sender, EventArgs e)
@@ -75,12 +60,16 @@ namespace DailyCollectionAndPayments
         {
             try
             {
-                _helper.LoadExcelSpreadSheet(this, null, "CollectionReport.xls",gvCollectionReport);
+                _helper.LoadExcelSpreadSheet(this, pnlCollectionReport, "CollectionReport.xls");
             }
             catch (Exception ex)
             {
                 _helper.ErrorsEntry(ex);
             }
+        }
+
+        public override void VerifyRenderingInServerForm(Control control)
+        {
         }
     }
 }
