@@ -1750,6 +1750,7 @@
     <Folder Include="dist\" />
     <Folder Include="font-awesome\" />
     <Folder Include="jquery\" />
+    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
