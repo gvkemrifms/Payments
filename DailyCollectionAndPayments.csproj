@@ -33,6 +33,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <FilesToIncludeForPublish>AllFilesInProjectFolder</FilesToIncludeForPublish>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -1539,6 +1540,7 @@
     <Content Include="DailyPaymentsReport.aspx" />
     <Content Include="DailyCollectionReportDetails.aspx" />
     <Content Include="Default.aspx" />
+    <Content Include="ExpectedDailyCollections.aspx" />
     <Content Include="images\delete.png" />
     <Content Include="images\deleteicon.png" />
     <Content Include="images\edit1.png" />
@@ -1649,7 +1651,9 @@
     <Content Include="Styles\js\jquery.snippet.min.js" />
     <Content Include="Styles\js\scripts.js" />
     <Content Include="Styles\Site.css" />
-    <Content Include="Web.sitemap" />
+    <Content Include="Web.sitemap">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="DailyCollectionReport.aspx" />
@@ -1700,6 +1704,13 @@
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ExpectedDailyCollections.aspx.cs">
+      <DependentUpon>ExpectedDailyCollections.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ExpectedDailyCollections.aspx.designer.cs">
+      <DependentUpon>ExpectedDailyCollections.aspx</DependentUpon>
     </Compile>
     <Compile Include="MainForm.aspx.cs">
       <DependentUpon>MainForm.aspx</DependentUpon>

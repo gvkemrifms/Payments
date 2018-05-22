@@ -259,7 +259,7 @@ namespace DailyCollectionAndPayments
                 cmd.Parameters.AddWithValue("@date", DCDate);
                 cmd.Parameters.AddWithValue("@amouont", amount);
                 cmd.Parameters.AddWithValue("@uid", uid);
-                num = ExecuteNonQuery(cmd, CommandType.StoredProcedure, "insert_collection");
+                num = ExecuteNonQuery(cmd, CommandType.StoredProcedure, "insert_expected_collection");
             }
             catch (Exception ex)
             {
@@ -280,7 +280,7 @@ namespace DailyCollectionAndPayments
                 cmd.Parameters.AddWithValue("@amt", amount);
                 cmd.Parameters.AddWithValue("@uid", uid);
                 cmd.Parameters.AddWithValue("@cid", custid);
-                num = ExecuteNonQuery(cmd, CommandType.StoredProcedure, "update_collections");
+                num = ExecuteNonQuery(cmd, CommandType.StoredProcedure, "update_expected_collections");
             }
             catch (Exception ex)
             {
