@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Globalization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -7,18 +8,22 @@ namespace DailyCollectionAndPayments
 {
     public partial class ExpectedDailyCollections : Page
     {
+        private readonly ExpectedColectionsModel _collection = new ExpectedColectionsModel();
         private readonly Helper _helper = new Helper();
         public string UserId;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["UserId"] == null)
                 Response.Redirect("Login.aspx");
             else
-                UserId = (string)Session["UserId"];
+                UserId = (string) Session["UserId"];
             if (!IsPostBack)
             {
                 BindStatesData();
-                txtDate.Text = DateTime.Now.Date.ToShortDateString();
+                FillDate();
+                txtYear.Text = DateTime.Now.Year.ToString();
+                txtMonth.Text = DateTime.Now.Month.ToString();
                 BindGridDetails();
             }
         }
@@ -64,14 +69,13 @@ namespace DailyCollectionAndPayments
         {
             if (btnSave.Text == "Save")
             {
-                _helper.InsertCollectionDetails(Convert.ToInt32(ddlState.SelectedValue), Convert.ToInt32(ddlProject.SelectedValue), Convert.ToDateTime(txtDate.Text), Convert.ToDecimal(txtAmount.Text), Convert.ToInt32(UserId));
+                InsertExpectedCollectionDetails();
                 Show("Successfully Inserted");
             }
             else
             {
-                var cid = Session["IdCol"].ToString();
-                _helper.UpdateCollectionDetails(Convert.ToInt32(ddlProject.SelectedValue), Convert.ToDateTime(txtDate.Text), Convert.ToDecimal(txtAmount.Text), Convert.ToInt32(UserId), Convert.ToInt32(cid));
                 btnSave.Text = "Save";
+                UpdateExpectedCollectionDetails();
                 Show("Successfully Updated");
             }
 
@@ -79,12 +83,59 @@ namespace DailyCollectionAndPayments
             BindGridDetails();
         }
 
+        private void InsertExpectedCollectionDetails()
+        {
+            var insertCollection = ExpectedCollectionDetails();
+            _helper.InsertexpectedCollectionDetails(Convert.ToInt32(insertCollection.State), Convert.ToInt32(insertCollection.Project), insertCollection.Amount, Convert.ToInt32(UserId), insertCollection.ExpectedStartDate, insertCollection.ExpectedEndDate);
+        }
+
+        private void UpdateExpectedCollectionDetails()
+        {
+            var updateCollection = ExpectedCollectionDetails();
+            _helper.InsertexpectedCollectionDetails(Convert.ToInt32(updateCollection.State), Convert.ToInt32(updateCollection.Project), updateCollection.Amount, Convert.ToInt32(UserId), updateCollection.ExpectedStartDate, updateCollection.ExpectedEndDate, Convert.ToInt32(Session["IdCol"]));
+        }
+
+        private ExpectedColectionsModel ExpectedCollectionDetails()
+        {
+            try
+            {
+                _collection.State = ddlState.SelectedValue;
+                _collection.Project = ddlProject.SelectedValue;
+                _collection.Amount = decimal.Parse(txtAmount.Text);
+                _collection.Day = ddldate.SelectedItem.Text;
+                var charRange = '-';
+                var startIndex = 0;
+                var endIndex = _collection.Day.LastIndexOf(charRange);
+                var length = endIndex - startIndex;
+                var startday = _collection.Day.Substring(startIndex, length);
+                var firstDayconcatinated = txtMonth.Text + "/" + startday + "/" + txtYear.Text;
+                _collection.ExpectedStartDate = DateTime.ParseExact(firstDayconcatinated, "M/dd/yyyy", CultureInfo.InvariantCulture);
+                var lastday = DateTime.DaysInMonth(Convert.ToInt32(txtYear.Text), Convert.ToInt32(txtMonth.Text));
+                var lastDayOfMonth = lastday.ToString();
+                var enddDay = _collection.Day.Substring(_collection.Day.IndexOf('-') + 1);
+                var check = 0;
+                var lastDayconcatinated = "";
+                if (int.TryParse(enddDay, out check))
+                    lastDayconcatinated = txtMonth.Text + "/" + enddDay + "/" + txtYear.Text;
+                else
+                    lastDayconcatinated = txtMonth.Text + "/" + lastDayOfMonth + "/" + txtYear.Text;
+
+                _collection.ExpectedEndDate = DateTime.ParseExact(lastDayconcatinated, "M/dd/yyyy", CultureInfo.InvariantCulture);
+            }
+            catch (Exception ex)
+            {
+                _helper.ErrorsEntry(ex);
+            }
+
+            return _collection;
+        }
+
         private void ClearControls()
         {
-            txtDate.Text = DateTime.Now.ToShortDateString();
             txtAmount.Text = "";
             ddlState.ClearSelection();
             ddlProject.ClearSelection();
+            ddldate.ClearSelection();
             btnSave.Text = "Save";
         }
 
@@ -103,8 +154,8 @@ namespace DailyCollectionAndPayments
 
         protected void btnEdit_Click(object sender, ImageClickEventArgs e)
         {
-            var row1 = (GridViewRow)((ImageButton)sender).NamingContainer;
-            var cid = ((Label)gvDailyPayments.Rows[row1.RowIndex].FindControl("C_ID")).Text;
+            var row1 = (GridViewRow) ((ImageButton) sender).NamingContainer;
+            var cid = ((Label) gvDailyPayments.Rows[row1.RowIndex].FindControl("C_ID")).Text;
             Session["IdCol"] = cid;
             var ds = _helper.ReturnDs("user_expected_Collection_grid", "@uid", UserId);
             ClearControls();
@@ -117,7 +168,6 @@ namespace DailyCollectionAndPayments
                     ddlState.Items.FindByText(row["state_name"].ToString()).Selected = true;
                     _helper.FillDropDownHelperMethodWithSp("userbased_projects", "project_name", "project_id", ddlState, ddlProject, "@uid", UserId, "@stid");
                     ddlProject.Items.FindByText(row["project_name"].ToString()).Selected = true;
-                    txtDate.Text = Convert.ToString(row["date"]);
                     txtAmount.Text = Convert.ToString(row["amount"]);
                     btnSave.Text = "Update";
                 }
@@ -131,7 +181,7 @@ namespace DailyCollectionAndPayments
         protected void gvDailyPayments_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
             var row = gvDailyPayments.Rows[e.RowIndex];
-            var usernamelable = (Label)row.FindControl("C_ID");
+            var usernamelable = (Label) row.FindControl("C_ID");
             var id = usernamelable.Text;
             var query = "delete  from t_expected_collections where c_id='" + id + "'";
             var i = _helper.ExecuteInsertStatement(query);
@@ -154,7 +204,23 @@ namespace DailyCollectionAndPayments
 
         protected void txtDate_TextChanged(object sender, EventArgs e)
         {
+        }
 
+        protected void ddlProject_SelectedIndexChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void FillDate()
+        {
+            ddldate.ClearSelection();
+            ddldate.Items.Add("1-10");
+            ddldate.Items.Add("11-20");
+            ddldate.Items.Add("21-MonthEnd");
+            ddldate.Items.Insert(0, "--Select--");
+        }
+
+        protected void txtYear_TextChanged(object sender, EventArgs e)
+        {
         }
     }
 }

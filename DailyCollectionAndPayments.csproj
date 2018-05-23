@@ -1705,6 +1705,7 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ExpectedColectionsModel.cs" />
     <Compile Include="ExpectedDailyCollections.aspx.cs">
       <DependentUpon>ExpectedDailyCollections.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

@@ -20,36 +20,20 @@
                 minimumResultsForSearch: 2,
                 placeholder: "Select an option"
             });
+            $('#<%= ddldate.ClientID %>').select2({
+                disable_search_threshold: 5,
+                search_contains: true,
+                minimumResultsForSearch: 10,
+                placeholder: "Select an option"
+            });
         });
 
         function UserDeleteConfirmation() {
-            if (confirm("Are you sure you want to delete this user?"))
+            if (confirm("Are you sure you want to delete this Record?"))
                 return true;
             else
                 return false;
         }
-
-        $(function() {
-            $('#<%= txtDate.ClientID %>').datepicker({
-                changeMonth: true,
-                changeYear: true
-                //,
-                //maxDate: 0
-            });
-            $('#<%= ddlState.ClientID %>').select2({
-                disable_search_threshold: 5,
-                search_contains: true,
-                minimumResultsForSearch: 20,
-                placeholder: "Select an option"
-            });
-            $('#<%= ddlProject.ClientID %>').select2({
-                disable_search_threshold: 5,
-                search_contains: true,
-                minimumResultsForSearch: 20,
-                placeholder: "Select an option"
-            });
-
-        });
 
         function Validations() {
             var ddlstate = $('#<%= ddlState.ClientID %> option:selected').text().toLowerCase();
@@ -58,12 +42,14 @@
             var ddlproject = $('#<%= ddlProject.ClientID %> option:selected').text().toLowerCase();
             if (ddlproject === '--select--')
                 return alert("Please select Project");
-            var validDate = $('#<%= txtDate.ClientID %>').val();
+
             var amount = $('#<%= txtAmount.ClientID %>').val();
-            if (validDate === '')
-                return alert('Please enter  Date');
+
             if (amount === '')
                 return alert('Please enter  Amount');
+            var ddlexpecteddate = $('#<%= ddldate.ClientID %> option:selected').text().toLowerCase();
+            if (ddlexpecteddate === '--select--')
+                return alert("Please select date");
             return true;
         }
 
@@ -108,20 +94,39 @@
                 Project<span style="color: red;">*</span>
             </td>
             <td>
-                <asp:DropDownList ID="ddlProject" runat="server" Width="150px"></asp:DropDownList>
+                <asp:DropDownList ID="ddlProject" runat="server" Width="150px" OnSelectedIndexChanged="ddlProject_SelectedIndexChanged" AutoPostBack="True"></asp:DropDownList>
             </td>
 
         </tr>
 
         <tr>
             <td>
-                Date<span style="color: red">*</span>
+                Year<span style="color: red">*</span>
             </td>
             <td>
-                <asp:TextBox ID="txtDate" runat="server" onkeypress="return false" oncut="return false" onpaste="return false" OnTextChanged="txtDate_TextChanged"></asp:TextBox>
+                <asp:TextBox ID="txtYear" runat="server" placeholder="Year" ReadOnly="True" style="color: gray" onkeypress="return numericOnly(this)" OnTextChanged="txtYear_TextChanged"></asp:TextBox>
             </td>
         </tr>
 
+        <tr>
+            <td>
+                Month<span style="color: red">*</span>
+            </td>
+            <td>
+                <asp:TextBox ID="txtMonth" runat="server" ReadOnly="True" style="color: gray" placeholder="Month" onkeypress="return numericOnly(this)"></asp:TextBox>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                Date<span style="color: red;">*</span>
+            </td>
+            <td>
+                <asp:DropDownList ID="ddldate" runat="server" Width="150px">
+                </asp:DropDownList>
+            </td>
+
+        </tr>
         <tr>
             <td>
                 Amount<span style="color: red">*</span>
@@ -134,7 +139,7 @@
         <tr>
 
             <td >
-                <asp:Button ID="btnSave" runat="server" CssClass="form-submit-button" Text="Save" style="margin-top: 20px; margin-left: 100px" OnClientClick="if (!Validations()) return false;" OnClick="btnSave_Click"/>
+                <asp:Button ID="btnSave" runat="server" CssClass="form-submit-button" Text="Save" style="margin-left: 100px; margin-top: 20px;" OnClientClick="if (!Validations()) return false;" OnClick="btnSave_Click"/>
             </td>
             <td>
                 <asp:Button ID="btnReset" runat="server" CssClass="form-reset-button" Text="Reset" style="margin-top: 20px" OnClick="btnReset_Click"/>
@@ -143,7 +148,7 @@
     </table>
 
 
-    <div align="center" style="margin-top: 20px; width: 1000px; margin-left: 100px">
+    <div align="center" style="margin-left: 100px; margin-top: 20px; width: 1000px;">
         <asp:GridView ID="gvDailyPayments" runat="server" BackColor="White" AutoGenerateColumns="False" OnRowDeleting="gvDailyPayments_RowDeleting" OnSelectedIndexChanging="gvDailyPayments_SelectedIndexChanging" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="3" OnSelectedIndexChanged="gvDailyPayments_SelectedIndexChanged" OnRowEditing="gvDailyPayments_RowEditing" OnRowUpdating="gvDailyPayments_RowUpdating" Width="1000px">
             <FooterStyle BackColor="White" ForeColor="#000066"/>
             <HeaderStyle BackColor="#006699" Font-Bold="True" ForeColor="White"/>
@@ -177,16 +182,6 @@
                         <asp:TextBox ID="txt_Name" runat="server" Text='<%#Eval("project_name") %>'></asp:TextBox>
                     </EditItemTemplate>
                 </asp:TemplateField>
-
-
-                <asp:TemplateField HeaderText="DATE">
-                    <ItemTemplate>
-                        <asp:Label ID="lbldate" runat="server" Text='<%#Eval("date") %>'></asp:Label>
-                    </ItemTemplate>
-                    <EditItemTemplate>
-                        <asp:TextBox ID="txtdate" runat="server" Text='<%#Eval("date") %>'></asp:TextBox>
-                    </EditItemTemplate>
-                </asp:TemplateField>
                 <asp:TemplateField HeaderText="AMOUNT">
                     <ItemTemplate>
                         <asp:Label ID="lblamount" runat="server" Text='<%#Eval("amount") %>'></asp:Label>
@@ -213,10 +208,7 @@
                         <asp:ImageButton ID="btnDelete" runat="server" CausesValidation="false" Width="20px" CommandName="Delete" ImageUrl="~/images/delete.png" Text="" OnClick="btnDelete_Click" OnClientClick="return UserDeleteConfirmation();" ToolTip=""/>
                     </ItemTemplate>
                 </asp:TemplateField>
-
-                <%--<asp:CommandField  ShowSelectButton="true" ControlStyle-Width="20px" ControlStyle-Height="20px" ControlStyle-ForeColor="Blue" SelectText="Edit" ButtonType="Image" SelectImageUrl="~/images/edit1.png"  />--%>
             </Columns>
-
         </asp:GridView>
     </div>
 </asp:Content>

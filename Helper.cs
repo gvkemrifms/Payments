@@ -259,7 +259,7 @@ namespace DailyCollectionAndPayments
                 cmd.Parameters.AddWithValue("@date", DCDate);
                 cmd.Parameters.AddWithValue("@amouont", amount);
                 cmd.Parameters.AddWithValue("@uid", uid);
-                num = ExecuteNonQuery(cmd, CommandType.StoredProcedure, "insert_expected_collection");
+                num = ExecuteNonQuery(cmd, CommandType.StoredProcedure, "insert_collection");
             }
             catch (Exception ex)
             {
@@ -280,7 +280,31 @@ namespace DailyCollectionAndPayments
                 cmd.Parameters.AddWithValue("@amt", amount);
                 cmd.Parameters.AddWithValue("@uid", uid);
                 cmd.Parameters.AddWithValue("@cid", custid);
-                num = ExecuteNonQuery(cmd, CommandType.StoredProcedure, "update_expected_collections");
+                num = ExecuteNonQuery(cmd, CommandType.StoredProcedure, "update_Collections");
+            }
+            catch (Exception ex)
+            {
+                ErrorsEntry(ex);
+            }
+
+            return num;
+        }
+
+        public int InsertexpectedCollectionDetails(int stateid, int projectId, decimal amount, int uid, DateTime startDate, DateTime endDate, int? cid = null)
+        {
+            var num = 0;
+            var cmd = new MySqlCommand();
+            try
+            {
+                cmd.Parameters.AddWithValue("@sid", stateid);
+                cmd.Parameters.AddWithValue("@pid", projectId);
+                cmd.Parameters.AddWithValue("@amouont", amount);
+                cmd.Parameters.AddWithValue("@uid", uid);
+                cmd.Parameters.AddWithValue("@sDate", startDate);
+                cmd.Parameters.AddWithValue("@eDate", endDate);
+                if (cid != null)
+                    cmd.Parameters.AddWithValue("@cid", cid);
+                num = ExecuteNonQuery(cmd, CommandType.StoredProcedure, cid == null ? "insert_ExpectedCollection" : "update_ExpectedCollection");
             }
             catch (Exception ex)
             {
@@ -365,7 +389,5 @@ namespace DailyCollectionAndPayments
             page.Response.Write(sw.ToString());
             page.Response.End();
         }
-
-        
     }
 }
