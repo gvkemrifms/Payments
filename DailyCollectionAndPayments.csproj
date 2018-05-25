@@ -108,6 +108,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ActualExpectedCollectionReports.aspx" />
     <Content Include="bin\DailyCollectionAndPayments.dll" />
     <Content Include="bin\DailyCollectionAndPayments.pdb" />
     <Content Include="bin\Microsoft.AI.Agent.Intercept.dll" />
@@ -1670,6 +1671,13 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActualExpectedCollectionReports.aspx.cs">
+      <DependentUpon>ActualExpectedCollectionReports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ActualExpectedCollectionReports.aspx.designer.cs">
+      <DependentUpon>ActualExpectedCollectionReports.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ChangePassword.aspx.cs">
       <DependentUpon>ChangePassword.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

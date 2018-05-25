@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.IO;
+using System.Net.Mail;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using MySql.Data.MySqlClient;
@@ -69,7 +71,7 @@ namespace DailyCollectionAndPayments
             var cmd = new MySqlCommand {Connection = conn, CommandType = CommandType.StoredProcedure, CommandText = commandText};
             if (dropDownValue != null)
             {
-                if (parameterValue != null)
+                if (parameterValue != null && uid!=null)
                     cmd.Parameters.AddWithValue(parameterValue, Convert.ToInt32(uid));
                 if (parameterValue1 != null)
                     cmd.Parameters.AddWithValue(parameterValue1, Convert.ToInt32(dropDownValue.SelectedValue));
@@ -102,6 +104,21 @@ namespace DailyCollectionAndPayments
                     gvCollections.DataBind();
                 }
             }
+        }
+
+        public DataTable FillGrid(string commandText, DropDownList dropDownValue = null, DropDownList dropDownValue1 = null, string parameterValue = null, string parameterValue1 = null, GridView gvCollections = null)
+        {
+            var connString = ConfigurationManager.AppSettings["GvkEmriCon"];
+            var conn = new MySqlConnection(connString);
+            var ds = new DataSet();
+            conn.Open();
+            var cmd = new MySqlCommand {Connection = conn, CommandType = CommandType.StoredProcedure, CommandText = commandText};
+           if(dropDownValue!=null) cmd.Parameters.AddWithValue(parameterValue, dropDownValue.SelectedValue);
+            if (dropDownValue1 != null) cmd.Parameters.AddWithValue(parameterValue1, dropDownValue1.SelectedValue);
+            var da = new MySqlDataAdapter(cmd);
+            da.Fill(ds);
+            var dt = ds.Tables[0];
+            return dt;
         }
 
         internal int UpdatePaymentsDetailsDetails(DateTime dateTime, int v1, int v2, decimal v3, int v4, int v5)
@@ -248,7 +265,7 @@ namespace DailyCollectionAndPayments
             }
         }
 
-        public int InsertCollectionDetails(int stateid, int projectId, DateTime DCDate, decimal amount, int uid)
+        public int InsertCollectionDetails(int stateid, int projectId, DateTime dcDate, decimal amount, int uid)
         {
             var num = 0;
             var cmd = new MySqlCommand();
@@ -256,7 +273,7 @@ namespace DailyCollectionAndPayments
             {
                 cmd.Parameters.AddWithValue("@sid", stateid);
                 cmd.Parameters.AddWithValue("@pid", projectId);
-                cmd.Parameters.AddWithValue("@date", DCDate);
+                cmd.Parameters.AddWithValue("@date", dcDate);
                 cmd.Parameters.AddWithValue("@amouont", amount);
                 cmd.Parameters.AddWithValue("@uid", uid);
                 num = ExecuteNonQuery(cmd, CommandType.StoredProcedure, "insert_collection");
@@ -269,14 +286,14 @@ namespace DailyCollectionAndPayments
             return num;
         }
 
-        public int UpdateCollectionDetails(int projectId, DateTime DCDate, decimal amount, int uid, int custid)
+        public int UpdateCollectionDetails(int projectId, DateTime dcDate, decimal amount, int uid, int custid)
         {
             var num = 0;
             var cmd = new MySqlCommand();
             try
             {
                 cmd.Parameters.AddWithValue("@projid", projectId);
-                cmd.Parameters.AddWithValue("@ddate", DCDate);
+                cmd.Parameters.AddWithValue("@ddate", dcDate);
                 cmd.Parameters.AddWithValue("@amt", amount);
                 cmd.Parameters.AddWithValue("@uid", uid);
                 cmd.Parameters.AddWithValue("@cid", custid);
@@ -389,5 +406,82 @@ namespace DailyCollectionAndPayments
             page.Response.Write(sw.ToString());
             page.Response.End();
         }
-    }
+
+        public void SendEmail(string fromEmailAddress,string recipients,string subject,string bodyMessage,string hostname,string password)
+        {
+            try
+            {
+                var email = new MailMessage {From = new MailAddress(fromEmailAddress) };
+                email.To.Add(recipients);
+                email.Subject = subject;
+                email.Body = bodyMessage;
+                email.IsBodyHtml = true;
+                var smtp = new SmtpClient
+                {
+                Host = hostname,
+                Credentials = new System.Net.NetworkCredential(fromEmailAddress, password),
+                EnableSsl = true
+                };
+                smtp.Send(email);
+            }
+        catch (Exception ex)
+        {
+            ErrorsEntry(ex);
+        }
 }
+
+        public void ShowMailButton(GridViewRow row,LinkButton lnkSendEmail,string expectedCollections,string actualCollections)
+        {
+            decimal estimatedTotal;
+            if (decimal.TryParse(((Label)row.FindControl(expectedCollections)).Text, out estimatedTotal))
+            {
+                decimal actualTotal;
+                if (decimal.TryParse(((Label)row.FindControl(actualCollections)).Text, out actualTotal))
+                    {
+                        lnkSendEmail.Visible = actualTotal < estimatedTotal;
+                    }
+                    else
+                        lnkSendEmail.Visible = false;
+            }
+                else
+                lnkSendEmail.Visible = false;
+            }
+
+        public void SendEmailToSpecificStates(string stateProjectText)
+        {
+            switch (stateProjectText.ToUpper())
+            {
+                case "ANDHRAPRADESH":
+                    SendEmail(ConfigurationManager.AppSettings["fromAddress"], "vinodns141@gmail.com", ConfigurationManager.AppSettings["subject"], ConfigurationManager.AppSettings["message"], ConfigurationManager.AppSettings["hostname"], ConfigurationManager.AppSettings["password"]);
+                    break;
+                case "TELANGANA":
+                    SendEmail(ConfigurationManager.AppSettings["fromAddress"], "vinodns141@gmail.com", ConfigurationManager.AppSettings["subject"], ConfigurationManager.AppSettings["message"], ConfigurationManager.AppSettings["hostname"], ConfigurationManager.AppSettings["password"]);
+                    break;
+                case "ASSAM":
+                    SendEmail(ConfigurationManager.AppSettings["fromAddress"], "vinodns141@gmail.com", ConfigurationManager.AppSettings["subject"], ConfigurationManager.AppSettings["message"], ConfigurationManager.AppSettings["hostname"], ConfigurationManager.AppSettings["password"]);
+                    break;
+                case "MEGHALAYA":
+                    SendEmail(ConfigurationManager.AppSettings["fromAddress"], "vinodns141@gmail.com", ConfigurationManager.AppSettings["subject"], ConfigurationManager.AppSettings["message"], ConfigurationManager.AppSettings["hostname"], ConfigurationManager.AppSettings["password"]);
+                    break;
+                case "HIMACHALPRADESH":
+                    SendEmail(ConfigurationManager.AppSettings["fromAddress"], "vinodns141@gmail.com", ConfigurationManager.AppSettings["subject"], ConfigurationManager.AppSettings["message"], ConfigurationManager.AppSettings["hostname"], ConfigurationManager.AppSettings["password"]);
+                    break;
+                case "CHHATTISGARH":
+                    SendEmail(ConfigurationManager.AppSettings["fromAddress"], "vinodns141@gmail.com", ConfigurationManager.AppSettings["subject"], ConfigurationManager.AppSettings["message"], ConfigurationManager.AppSettings["hostname"], ConfigurationManager.AppSettings["password"]);
+                    break;
+                case "UTTARPRADESH":
+                    SendEmail(ConfigurationManager.AppSettings["fromAddress"], "vinodns141@gmail.com", ConfigurationManager.AppSettings["subject"], ConfigurationManager.AppSettings["message"], ConfigurationManager.AppSettings["hostname"], ConfigurationManager.AppSettings["password"]);
+                    break;
+                case "RAJASTHAN":
+                    SendEmail(ConfigurationManager.AppSettings["fromAddress"], "vinodns141@gmail.com", ConfigurationManager.AppSettings["subject"], ConfigurationManager.AppSettings["message"], ConfigurationManager.AppSettings["hostname"], ConfigurationManager.AppSettings["password"]);
+                    break;
+                case "WESTBENGAL":
+                    SendEmail(ConfigurationManager.AppSettings["fromAddress"], "vinodns141@gmail.com", ConfigurationManager.AppSettings["subject"], ConfigurationManager.AppSettings["message"], ConfigurationManager.AppSettings["hostname"], ConfigurationManager.AppSettings["password"]);
+                    break;
+                default:
+                    SendEmail("vinodns141@gmail.com", "vinodns141@gmail.com", "Test","TestMessage", "www.gmail.com", "");
+                    break;
+            }
+        }
+    }
+    }

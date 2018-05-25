@@ -69,13 +69,30 @@ namespace DailyCollectionAndPayments
         {
             if (btnSave.Text == "Save")
             {
-                InsertExpectedCollectionDetails();
+                try
+                {
+                    InsertExpectedCollectionDetails();
+                    BindGridDetails();
+                }
+                catch (Exception ex)
+                {
+                    _helper.ErrorsEntry(ex);
+                }
                 Show("Successfully Inserted");
             }
             else
             {
-                btnSave.Text = "Save";
-                UpdateExpectedCollectionDetails();
+                try
+                {
+                    btnSave.Text = "Save";
+                    UpdateExpectedCollectionDetails();
+                    BindGridDetails();
+                }
+                catch (Exception ex)
+                {
+                    _helper.ErrorsEntry(ex);
+                }
+                
                 Show("Successfully Updated");
             }
 
