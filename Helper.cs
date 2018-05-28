@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.IO;
+using System.Net;
 using System.Net.Mail;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -71,7 +72,7 @@ namespace DailyCollectionAndPayments
             var cmd = new MySqlCommand {Connection = conn, CommandType = CommandType.StoredProcedure, CommandText = commandText};
             if (dropDownValue != null)
             {
-                if (parameterValue != null && uid!=null)
+                if (parameterValue != null && uid != null)
                     cmd.Parameters.AddWithValue(parameterValue, Convert.ToInt32(uid));
                 if (parameterValue1 != null)
                     cmd.Parameters.AddWithValue(parameterValue1, Convert.ToInt32(dropDownValue.SelectedValue));
@@ -113,7 +114,7 @@ namespace DailyCollectionAndPayments
             var ds = new DataSet();
             conn.Open();
             var cmd = new MySqlCommand {Connection = conn, CommandType = CommandType.StoredProcedure, CommandText = commandText};
-           if(dropDownValue!=null) cmd.Parameters.AddWithValue(parameterValue, dropDownValue.SelectedValue);
+            if (dropDownValue != null) cmd.Parameters.AddWithValue(parameterValue, dropDownValue.SelectedValue);
             if (dropDownValue1 != null) cmd.Parameters.AddWithValue(parameterValue1, dropDownValue1.SelectedValue);
             var da = new MySqlDataAdapter(cmd);
             da.Fill(ds);
@@ -407,11 +408,11 @@ namespace DailyCollectionAndPayments
             page.Response.End();
         }
 
-        public void SendEmail(string fromEmailAddress,string recipients,string subject,string bodyMessage,string hostname,string password)
+        public void SendEmail(string fromEmailAddress, string recipients, string subject, string bodyMessage, string hostname, string password)
         {
             try
             {
-                var email = new MailMessage {From = new MailAddress(fromEmailAddress) };
+                var email = new MailMessage {From = new MailAddress(fromEmailAddress)};
                 email.To.Add(recipients);
                 email.Subject = subject;
                 email.Body = bodyMessage;
@@ -419,69 +420,88 @@ namespace DailyCollectionAndPayments
                 var smtp = new SmtpClient
                 {
                 Host = hostname,
-                Credentials = new System.Net.NetworkCredential(fromEmailAddress, password),
+                Port = 587,
+                Credentials = new NetworkCredential(fromEmailAddress, password),
                 EnableSsl = true
                 };
                 smtp.Send(email);
             }
-        catch (Exception ex)
-        {
-            ErrorsEntry(ex);
+            catch (Exception ex)
+            {
+                ErrorsEntry(ex);
+            }
         }
-}
 
-        public void ShowMailButton(GridViewRow row,LinkButton lnkSendEmail,string expectedCollections,string actualCollections)
+        public void ShowMailButton(GridViewRow row, LinkButton lnkSendEmail, string expectedCollections, string actualCollections)
         {
             decimal estimatedTotal;
-            if (decimal.TryParse(((Label)row.FindControl(expectedCollections)).Text, out estimatedTotal))
+            if (decimal.TryParse(((Label) row.FindControl(expectedCollections)).Text, out estimatedTotal))
             {
                 decimal actualTotal;
-                if (decimal.TryParse(((Label)row.FindControl(actualCollections)).Text, out actualTotal))
-                    {
-                        lnkSendEmail.Visible = actualTotal < estimatedTotal;
-                    }
-                    else
-                        lnkSendEmail.Visible = false;
-            }
+                if (decimal.TryParse(((Label) row.FindControl(actualCollections)).Text, out actualTotal))
+                    lnkSendEmail.Visible = actualTotal < estimatedTotal;
                 else
+                    lnkSendEmail.Visible = false;
+            }
+            else
+            {
                 lnkSendEmail.Visible = false;
             }
+        }
 
-        public void SendEmailToSpecificStates(string stateProjectText)
+        private void SendEmail(IEnumerable<string> emailids)
         {
+            var ids = string.Join(",", emailids);
+            SendEmail(ConfigurationManager.AppSettings["fromAddress"], ids, ConfigurationManager.AppSettings["subject"], ConfigurationManager.AppSettings["message"], ConfigurationManager.AppSettings["hostname"], ConfigurationManager.AppSettings["password"]);
+        }
+
+        public void SendEmailToSpecificStates(string stateProjectText, DataTable dt)
+        {
+            IEnumerable<string> emailids = null;
             switch (stateProjectText.ToUpper())
             {
                 case "ANDHRAPRADESH":
-                    SendEmail(ConfigurationManager.AppSettings["fromAddress"], "vinodns141@gmail.com", ConfigurationManager.AppSettings["subject"], ConfigurationManager.AppSettings["message"], ConfigurationManager.AppSettings["hostname"], ConfigurationManager.AppSettings["password"]);
+                    emailids = dt.AsEnumerable().Where(x => x.Field<string>("state_name") == "AP").Select(x => x.Field<string>("email_id"));
+
                     break;
                 case "TELANGANA":
-                    SendEmail(ConfigurationManager.AppSettings["fromAddress"], "vinodns141@gmail.com", ConfigurationManager.AppSettings["subject"], ConfigurationManager.AppSettings["message"], ConfigurationManager.AppSettings["hostname"], ConfigurationManager.AppSettings["password"]);
+                    emailids = dt.AsEnumerable().Where(x => x.Field<string>("state_name") == "TS").Select(x => x.Field<string>("email_id"));
+
                     break;
                 case "ASSAM":
-                    SendEmail(ConfigurationManager.AppSettings["fromAddress"], "vinodns141@gmail.com", ConfigurationManager.AppSettings["subject"], ConfigurationManager.AppSettings["message"], ConfigurationManager.AppSettings["hostname"], ConfigurationManager.AppSettings["password"]);
+                    emailids = dt.AsEnumerable().Where(x => x.Field<string>("state_name") == "AS").Select(x => x.Field<string>("email_id"));
+
                     break;
                 case "MEGHALAYA":
-                    SendEmail(ConfigurationManager.AppSettings["fromAddress"], "vinodns141@gmail.com", ConfigurationManager.AppSettings["subject"], ConfigurationManager.AppSettings["message"], ConfigurationManager.AppSettings["hostname"], ConfigurationManager.AppSettings["password"]);
+                    emailids = dt.AsEnumerable().Where(x => x.Field<string>("state_name") == "MG").Select(x => x.Field<string>("email_id"));
+
                     break;
                 case "HIMACHALPRADESH":
-                    SendEmail(ConfigurationManager.AppSettings["fromAddress"], "vinodns141@gmail.com", ConfigurationManager.AppSettings["subject"], ConfigurationManager.AppSettings["message"], ConfigurationManager.AppSettings["hostname"], ConfigurationManager.AppSettings["password"]);
+                    emailids = dt.AsEnumerable().Where(x => x.Field<string>("state_name") == "HP").Select(x => x.Field<string>("email_id"));
+
                     break;
                 case "CHHATTISGARH":
-                    SendEmail(ConfigurationManager.AppSettings["fromAddress"], "vinodns141@gmail.com", ConfigurationManager.AppSettings["subject"], ConfigurationManager.AppSettings["message"], ConfigurationManager.AppSettings["hostname"], ConfigurationManager.AppSettings["password"]);
+                    emailids = dt.AsEnumerable().Where(x => x.Field<string>("state_name") == "CG").Select(x => x.Field<string>("email_id"));
+
                     break;
                 case "UTTARPRADESH":
-                    SendEmail(ConfigurationManager.AppSettings["fromAddress"], "vinodns141@gmail.com", ConfigurationManager.AppSettings["subject"], ConfigurationManager.AppSettings["message"], ConfigurationManager.AppSettings["hostname"], ConfigurationManager.AppSettings["password"]);
+                    emailids = dt.AsEnumerable().Where(x => x.Field<string>("state_name") == "UP").Select(x => x.Field<string>("email_id"));
+
                     break;
                 case "RAJASTHAN":
-                    SendEmail(ConfigurationManager.AppSettings["fromAddress"], "vinodns141@gmail.com", ConfigurationManager.AppSettings["subject"], ConfigurationManager.AppSettings["message"], ConfigurationManager.AppSettings["hostname"], ConfigurationManager.AppSettings["password"]);
+                    emailids = dt.AsEnumerable().Where(x => x.Field<string>("state_name") == "RJ").Select(x => x.Field<string>("email_id"));
+
                     break;
                 case "WESTBENGAL":
-                    SendEmail(ConfigurationManager.AppSettings["fromAddress"], "vinodns141@gmail.com", ConfigurationManager.AppSettings["subject"], ConfigurationManager.AppSettings["message"], ConfigurationManager.AppSettings["hostname"], ConfigurationManager.AppSettings["password"]);
+                    emailids = dt.AsEnumerable().Where(x => x.Field<string>("state_name") == "WB").Select(x => x.Field<string>("email_id"));
+
                     break;
                 default:
-                    SendEmail("vinodns141@gmail.com", "vinodns141@gmail.com", "Test","TestMessage", "www.gmail.com", "");
+                    SendEmail("vinodns141@gmail.com", "vinodns141@gmail.com", "Test", "TestMessage", "smtp.gmail.com", "");
                     break;
             }
+
+            SendEmail(emailids);
         }
     }
-    }
+}

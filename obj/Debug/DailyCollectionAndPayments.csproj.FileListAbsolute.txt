@@ -43,4 +43,3 @@ E:\DailyCollectionAndPayments\DailyCollectionAndPayments\bin\Google.Protobuf.xml
 E:\DailyCollectionAndPayments\DailyCollectionAndPayments\bin\MySql.Data.xml
 E:\DailyCollectionAndPayments\DailyCollectionAndPayments\obj\Debug\DailyCollectionAndPayments.dll
 E:\DailyCollectionAndPayments\DailyCollectionAndPayments\obj\Debug\DailyCollectionAndPayments.pdb
-E:\DailyCollectionAndPayments\DailyCollectionAndPayments\obj\Debug\DailyCollectionAndPayments.csprojResolveAssemblyReference.cache

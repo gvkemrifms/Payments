@@ -78,6 +78,7 @@ namespace DailyCollectionAndPayments
                 {
                     _helper.ErrorsEntry(ex);
                 }
+
                 Show("Successfully Inserted");
             }
             else
@@ -92,7 +93,7 @@ namespace DailyCollectionAndPayments
                 {
                     _helper.ErrorsEntry(ex);
                 }
-                
+
                 Show("Successfully Updated");
             }
 
@@ -116,6 +117,7 @@ namespace DailyCollectionAndPayments
         {
             try
             {
+                DateTime dtt;
                 _collection.State = ddlState.SelectedValue;
                 _collection.Project = ddlProject.SelectedValue;
                 _collection.Amount = decimal.Parse(txtAmount.Text);
@@ -126,7 +128,7 @@ namespace DailyCollectionAndPayments
                 var length = endIndex - startIndex;
                 var startday = _collection.Day.Substring(startIndex, length);
                 var firstDayconcatinated = txtMonth.Text + "/" + startday + "/" + txtYear.Text;
-                _collection.ExpectedStartDate = DateTime.ParseExact(firstDayconcatinated, "M/dd/yyyy", CultureInfo.InvariantCulture);
+                _collection.ExpectedStartDate = startday.Length == 1 ? DateTime.Parse(firstDayconcatinated) : DateTime.ParseExact(firstDayconcatinated, "M/dd/yyyy", CultureInfo.InvariantCulture);
                 var lastday = DateTime.DaysInMonth(Convert.ToInt32(txtYear.Text), Convert.ToInt32(txtMonth.Text));
                 var lastDayOfMonth = lastday.ToString();
                 var enddDay = _collection.Day.Substring(_collection.Day.IndexOf('-') + 1);
