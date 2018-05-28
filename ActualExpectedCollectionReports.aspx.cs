@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -8,6 +10,7 @@ namespace DailyCollectionAndPayments
     public partial class ActualExpectedCollectionReports : Page
     {
         private readonly Helper _helper = new Helper();
+        private List<decimal> _numbers;
         public string UserId;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -56,10 +59,10 @@ namespace DailyCollectionAndPayments
                             var lnksendEmail1To10 = (LinkButton) row.FindControl("lnkSendEmail1to10");
                             var lnksendEmail11To20 = (LinkButton) row.FindControl("lnkSendEmail11to20");
                             var lnksendEmail21Toend = (LinkButton) row.FindControl("lnkSendEmail21toend");
-                            _helper.ShowMailButton(row, lnksendEmail21Toend, "lblExpectedMonthEndCollection", "lblActualMonthEndCollection");
-                            _helper.ShowMailButton(row, lnksendEmail11To20, "lblExpected20DaysCollection", "lblActual20DaysCollection");
-                            _helper.ShowMailButton(row, lnksendEmail1To10, "lblExpectedFirst10DaysCollection", "lblActual10DaysCollection");
-                            _helper.ShowMailButton(row, lnksendEmail, "lblEstimatedTotal", "lblActualTotal");
+                            _numbers = _helper.ShowMailButton(row, lnksendEmail21Toend, "lblExpectedMonthEndCollection", "lblActualMonthEndCollection");
+                            _numbers = _helper.ShowMailButton(row, lnksendEmail11To20, "lblExpected20DaysCollection", "lblActual20DaysCollection");
+                            _numbers = _helper.ShowMailButton(row, lnksendEmail1To10, "lblExpectedFirst10DaysCollection", "lblActual10DaysCollection");
+                            _numbers = _helper.ShowMailButton(row, lnksendEmail, "lblEstimatedTotal", "lblActualTotal");
                         }
                     }
                 }
@@ -81,23 +84,43 @@ namespace DailyCollectionAndPayments
             var rowindex = row.RowIndex;
             var stateProject = (Label) gvActualCollectionReport.Rows[rowindex].FindControl("lblStateProject");
             var stateName = stateProject.Text.Substring(0, stateProject.Text.IndexOf('-'));
-            var query = "select * from m_users";
+            var query = "SELECT s.State_name,u.state_name ,u.email_id FROM m_users u JOIN m_states s ON u.state_name=s.short_name WHERE s.State_name='" + stateName + "'";
             var dt = _helper.ExecuteSelectStmt(query);
             try
             {
                 switch (e.CommandName)
                 {
                     case "1to10":
+                        CommonMethod(rowindex, dt, stateProject, "lblActual10DaysCollection", "lblExpectedFirst10DaysCollection");
+                        break;
                     case "11to20":
+                        CommonMethod(rowindex, dt, stateProject, "lblActual20DaysCollection", "lblExpected20DaysCollection");
+
+                        break;
                     case "21toend":
+                        CommonMethod(rowindex, dt, stateProject, "lblActualMonthEndCollection", "lblExpectedMonthEndCollection");
+                        break;
                     case "send":
-                        _helper.SendEmailToSpecificStates(stateName, dt);
+                        CommonMethod(rowindex, dt, stateProject, "lblActualTotal", "lblEstimatedTotal");
                         break;
                 }
             }
             catch (Exception ex)
             {
                 _helper.ErrorsEntry(ex);
+            }
+        }
+
+        private void CommonMethod(int rowindex, DataTable dt, Label stateProject, string actual, string expected)
+        {
+            decimal estimatedTotal;
+            var actualCollection = (Label) gvActualCollectionReport.Rows[rowindex].FindControl(actual);
+            var expectedCollection = (Label) gvActualCollectionReport.Rows[rowindex].FindControl(expected);
+            if (decimal.TryParse(expectedCollection.Text, out estimatedTotal))
+            {
+                decimal actualTotal;
+                if (decimal.TryParse(actualCollection.Text, out actualTotal))
+                    _helper.SendEmailToSpecificStates(dt, estimatedTotal, actualTotal, stateProject.Text);
             }
         }
 

@@ -5,8 +5,10 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using MySql.Data.MySqlClient;
@@ -408,21 +410,42 @@ namespace DailyCollectionAndPayments
             page.Response.End();
         }
 
-        public void SendEmail(string fromEmailAddress, string recipients, string subject, string bodyMessage, string hostname, string password)
+        public void SendMailMessage(string fromEmailAddress, string recipients, string subject, string bodyMessage, string hostname, string password, decimal expectamount, decimal actualamount)
         {
+            var mailText = "";
             try
             {
+                var greeting = "";
+                if (DateTime.Now.Hour >= 0 && DateTime.Now.Hour <= 11)
+                    greeting = "Good Morning,";
+                else if (DateTime.Now.Hour >= 12 && DateTime.Now.Hour <= 15)
+                    greeting = "Good Afternoon,";
+                else
+                    greeting = "Good Evening,";
+                mailText = mailText + "<div style='color:darkblue;font-size:14px;font-family:Trebuchet MS;'><br />" + greeting + "<br /><br /><b> Please find below EstimatedCollection Vs ActualCollection details.";
+                mailText = mailText + " </b> <br /> <br />  </div>";
+                mailText = mailText + "<table border='1' cellpadding='2' cellspacing='0' style='color:darkblue; border-color:Highlight; font-size:14px; font-family:Trebuchet MS; '>";
+                mailText = mailText + "<tr style='background-color: brown;'> "
+                                    + "      <td style='width:200px;'> Estimated Collection </td> "
+                                    + "      <td style='width:200px;'> Actual Collection </td>"
+                                    + "      <td style='width:200px;'> Balance Amount </td> </tr>";
+                mailText = mailText + "<tr>";
+                mailText = mailText + "<td style='text-align:center'>" + expectamount + "</td>";
+                mailText = mailText + "<td style='text-align:center'>" + actualamount + "</td>";
+                mailText = mailText + "<td style='text-align:center'>" + (expectamount - actualamount) + "</td>";
+                mailText = mailText + "</tr>";
+                mailText = mailText + "</table>";
+                mailText = mailText + "<br /><div style='color:black;font-size:10px;font-family:Trebuchet MS;'><br />* This is system generated E-mail.</div>";
                 var email = new MailMessage {From = new MailAddress(fromEmailAddress)};
                 email.To.Add(recipients);
                 email.Subject = subject;
-                email.Body = bodyMessage;
+                email.Body = mailText;
                 email.IsBodyHtml = true;
                 var smtp = new SmtpClient
                 {
                 Host = hostname,
-                Port = 587,
-                Credentials = new NetworkCredential(fromEmailAddress, password),
-                EnableSsl = true
+                Port = 25,
+                Credentials = new NetworkCredential(fromEmailAddress, password)
                 };
                 smtp.Send(email);
             }
@@ -432,12 +455,14 @@ namespace DailyCollectionAndPayments
             }
         }
 
-        public void ShowMailButton(GridViewRow row, LinkButton lnkSendEmail, string expectedCollections, string actualCollections)
+        public List<decimal> ShowMailButton(GridViewRow row, LinkButton lnkSendEmail, string expectedCollections, string actualCollections)
         {
             decimal estimatedTotal;
+            decimal actualTotal = 0;
+            var nums = new List<decimal>();
+
             if (decimal.TryParse(((Label) row.FindControl(expectedCollections)).Text, out estimatedTotal))
             {
-                decimal actualTotal;
                 if (decimal.TryParse(((Label) row.FindControl(actualCollections)).Text, out actualTotal))
                     lnkSendEmail.Visible = actualTotal < estimatedTotal;
                 else
@@ -447,61 +472,29 @@ namespace DailyCollectionAndPayments
             {
                 lnkSendEmail.Visible = false;
             }
+
+            nums.Add(estimatedTotal);
+            nums.Add(actualTotal);
+            return nums;
         }
 
-        private void SendEmail(IEnumerable<string> emailids)
+        private void SendEmail(IEnumerable<string> emailids, decimal estimatedAmount, decimal actualAmount, DataTable dataTable, string stateProject)
         {
+            var subject = stateProject + "-" + "Expected  Collection Not Met";
             var ids = string.Join(",", emailids);
-            SendEmail(ConfigurationManager.AppSettings["fromAddress"], ids, ConfigurationManager.AppSettings["subject"], ConfigurationManager.AppSettings["message"], ConfigurationManager.AppSettings["hostname"], ConfigurationManager.AppSettings["password"]);
+            var message = stateProject + "-" + "Expected Collection Not Met Actual Collection Estimated Collection =" + "  " + estimatedAmount + "and Actual Collection =" + " " + actualAmount;
+            var userName = dataTable.AsEnumerable().Select(x => x.Field<string>("sendingMailId")).First();
+            var password = dataTable.AsEnumerable().Select(x => x.Field<string>("PASSWORD")).First();
+            SendMailMessage(userName, ids, subject, message, ConfigurationManager.AppSettings["hostname"], password, estimatedAmount, actualAmount);
         }
 
-        public void SendEmailToSpecificStates(string stateProjectText, DataTable dt)
+        public void SendEmailToSpecificStates(DataTable dt, decimal estimated, decimal actual, string stateProject)
         {
-            IEnumerable<string> emailids = null;
-            switch (stateProjectText.ToUpper())
-            {
-                case "ANDHRAPRADESH":
-                    emailids = dt.AsEnumerable().Where(x => x.Field<string>("state_name") == "AP").Select(x => x.Field<string>("email_id"));
-
-                    break;
-                case "TELANGANA":
-                    emailids = dt.AsEnumerable().Where(x => x.Field<string>("state_name") == "TS").Select(x => x.Field<string>("email_id"));
-
-                    break;
-                case "ASSAM":
-                    emailids = dt.AsEnumerable().Where(x => x.Field<string>("state_name") == "AS").Select(x => x.Field<string>("email_id"));
-
-                    break;
-                case "MEGHALAYA":
-                    emailids = dt.AsEnumerable().Where(x => x.Field<string>("state_name") == "MG").Select(x => x.Field<string>("email_id"));
-
-                    break;
-                case "HIMACHALPRADESH":
-                    emailids = dt.AsEnumerable().Where(x => x.Field<string>("state_name") == "HP").Select(x => x.Field<string>("email_id"));
-
-                    break;
-                case "CHHATTISGARH":
-                    emailids = dt.AsEnumerable().Where(x => x.Field<string>("state_name") == "CG").Select(x => x.Field<string>("email_id"));
-
-                    break;
-                case "UTTARPRADESH":
-                    emailids = dt.AsEnumerable().Where(x => x.Field<string>("state_name") == "UP").Select(x => x.Field<string>("email_id"));
-
-                    break;
-                case "RAJASTHAN":
-                    emailids = dt.AsEnumerable().Where(x => x.Field<string>("state_name") == "RJ").Select(x => x.Field<string>("email_id"));
-
-                    break;
-                case "WESTBENGAL":
-                    emailids = dt.AsEnumerable().Where(x => x.Field<string>("state_name") == "WB").Select(x => x.Field<string>("email_id"));
-
-                    break;
-                default:
-                    SendEmail("vinodns141@gmail.com", "vinodns141@gmail.com", "Test", "TestMessage", "smtp.gmail.com", "");
-                    break;
-            }
-
-            SendEmail(emailids);
+            IEnumerable<string> emailids = dt.AsEnumerable().Select(x => x.Field<string>("email_id"));
+            var query = "SELECT sendingMailId,PASSWORD FROM rpt_finance_mail_sync";
+            var dataTable = ExecuteSelectStmt(query);
+            SendEmail(emailids, estimated, actual, dataTable, stateProject);
         }
+
     }
 }
