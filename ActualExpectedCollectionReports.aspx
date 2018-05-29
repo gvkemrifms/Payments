@@ -71,7 +71,7 @@
                 </asp:TemplateField>
                 <asp:TemplateField HeaderText="Send Email">
                     <ItemTemplate>
-                        <asp:LinkButton ID="lnkSendEmail1to10" runat="server" CommandName="1to10" CssClass="form-submit-button"  CommandArgument=" <%# Container.DataItemIndex %>"
+                        <asp:LinkButton ID="lnkSendEmail1to10" runat="server" CommandName="1to10" CssClass="form-submit-button" CommandArgument=" <%# Container.DataItemIndex %>"
                                         Text="Send Email">
                         </asp:LinkButton>
                     </ItemTemplate>
@@ -91,7 +91,7 @@
                 </asp:TemplateField>
                 <asp:TemplateField HeaderText="Send Email">
                     <ItemTemplate>
-                        <asp:LinkButton ID="lnkSendEmail11to20" runat="server" CommandName="11to20"  CssClass="form-submit-button"  CommandArgument=" <%# Container.DataItemIndex %>" Text="Send Email">
+                        <asp:LinkButton ID="lnkSendEmail11to20" runat="server" CommandName="11to20" CssClass="form-submit-button" CommandArgument=" <%# Container.DataItemIndex %>" Text="Send Email">
                         </asp:LinkButton>
                     </ItemTemplate>
                 </asp:TemplateField>
@@ -107,7 +107,7 @@
                 </asp:TemplateField>
                 <asp:TemplateField HeaderText="Send Email">
                     <ItemTemplate>
-                        <asp:LinkButton ID="lnkSendEmail21toend" runat="server" CommandName="21toend" CssClass="form-submit-button"  CommandArgument=" <%# Container.DataItemIndex %>"
+                        <asp:LinkButton ID="lnkSendEmail21toend" runat="server" CommandName="21toend" CssClass="form-submit-button" CommandArgument=" <%# Container.DataItemIndex %>"
                                         Text="Send Email">
                         </asp:LinkButton>
                     </ItemTemplate>
@@ -124,7 +124,7 @@
                 </asp:TemplateField>
                 <asp:TemplateField HeaderText="Send Email">
                     <ItemTemplate>
-                        <asp:LinkButton ID="lnkSendEmail" runat="server" CommandName="send"  CssClass="form-submit-button"  CommandArgument=" <%# Container.DataItemIndex %>"
+                        <asp:LinkButton ID="lnkSendEmail" runat="server" CommandName="send" CssClass="form-submit-button" CommandArgument=" <%# Container.DataItemIndex %>"
                                         Text="Send Email" OnClick="lnkSendEmail_OnClick">
                         </asp:LinkButton>
                     </ItemTemplate>

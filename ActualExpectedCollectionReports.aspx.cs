@@ -120,7 +120,7 @@ namespace DailyCollectionAndPayments
             {
                 decimal actualTotal;
                 if (decimal.TryParse(actualCollection.Text, out actualTotal))
-                    _helper.SendEmailToSpecificStates(dt, estimatedTotal, actualTotal, stateProject.Text);
+                    _helper.SendEmail(this, estimatedTotal, actualTotal, dt, stateProject.Text);
             }
         }
 

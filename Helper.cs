@@ -8,7 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using MySql.Data.MySqlClient;
@@ -410,7 +409,7 @@ namespace DailyCollectionAndPayments
             page.Response.End();
         }
 
-        public void SendMailMessage(string fromEmailAddress, string recipients, string subject, string bodyMessage, string hostname, string password, decimal expectamount, decimal actualamount)
+        public void SendMailMessage(string fromEmailAddress, string recipients, string subject, string bodyMessage, string hostname, string password, decimal expectamount, decimal actualamount, Page page)
         {
             var mailText = "";
             try
@@ -441,6 +440,7 @@ namespace DailyCollectionAndPayments
                 email.Subject = subject;
                 email.Body = mailText;
                 email.IsBodyHtml = true;
+                email.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure;
                 var smtp = new SmtpClient
                 {
                 Host = hostname,
@@ -448,6 +448,8 @@ namespace DailyCollectionAndPayments
                 Credentials = new NetworkCredential(fromEmailAddress, password)
                 };
                 smtp.Send(email);
+                var message = "Mail Successfully Sent";
+                ScriptManager.RegisterStartupScript(page, GetType(), "msg", "alert('" + message + "');", true);
             }
             catch (Exception ex)
             {
@@ -478,23 +480,17 @@ namespace DailyCollectionAndPayments
             return nums;
         }
 
-        private void SendEmail(IEnumerable<string> emailids, decimal estimatedAmount, decimal actualAmount, DataTable dataTable, string stateProject)
+        public void SendEmail(Page page, decimal estimatedAmount, decimal actualAmount, DataTable dt, string stateProject)
         {
+            IEnumerable<string> emailids = dt.AsEnumerable().Select(x => x.Field<string>("email_id"));
+            var query = "SELECT sendingMailId,PASSWORD FROM rpt_finance_mail_sync";
+            var dataTable = ExecuteSelectStmt(query);
             var subject = stateProject + "-" + "Expected  Collection Not Met";
             var ids = string.Join(",", emailids);
             var message = stateProject + "-" + "Expected Collection Not Met Actual Collection Estimated Collection =" + "  " + estimatedAmount + "and Actual Collection =" + " " + actualAmount;
             var userName = dataTable.AsEnumerable().Select(x => x.Field<string>("sendingMailId")).First();
             var password = dataTable.AsEnumerable().Select(x => x.Field<string>("PASSWORD")).First();
-            SendMailMessage(userName, ids, subject, message, ConfigurationManager.AppSettings["hostname"], password, estimatedAmount, actualAmount);
+            SendMailMessage(userName, ids, subject, message, ConfigurationManager.AppSettings["hostname"], password, estimatedAmount, actualAmount, page);
         }
-
-        public void SendEmailToSpecificStates(DataTable dt, decimal estimated, decimal actual, string stateProject)
-        {
-            IEnumerable<string> emailids = dt.AsEnumerable().Select(x => x.Field<string>("email_id"));
-            var query = "SELECT sendingMailId,PASSWORD FROM rpt_finance_mail_sync";
-            var dataTable = ExecuteSelectStmt(query);
-            SendEmail(emailids, estimated, actual, dataTable, stateProject);
-        }
-
     }
 }
