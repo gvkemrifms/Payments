@@ -23,7 +23,7 @@ namespace DailyCollectionAndPayments
                 BindStatesData();
                 FillDate();
                 txtYear.Text = DateTime.Now.Year.ToString();
-                txtMonth.Text = DateTime.Now.Month.ToString();
+                txtMonth.Text = DateTime.Now.ToString("MMMM");              
                 BindGridDetails();
             }
         }
@@ -117,17 +117,17 @@ namespace DailyCollectionAndPayments
         {
             try
             {
-                DateTime dtt;
                 _collection.State = ddlState.SelectedValue;
                 _collection.Project = ddlProject.SelectedValue;
                 _collection.Amount = decimal.Parse(txtAmount.Text);
                 _collection.Day = ddldate.SelectedItem.Text;
+                string monthNumber = DateTime.Now.Month.ToString();
                 var charRange = '-';
                 var startIndex = 0;
                 var endIndex = _collection.Day.LastIndexOf(charRange);
                 var length = endIndex - startIndex;
                 var startday = _collection.Day.Substring(startIndex, length);
-                var firstDayconcatinated = txtMonth.Text + "/" + startday + "/" + txtYear.Text;
+                var firstDayconcatinated = monthNumber + "/" + startday + "/" + txtYear.Text;
                 _collection.ExpectedStartDate = startday.Length == 1 ? DateTime.Parse(firstDayconcatinated) : DateTime.ParseExact(firstDayconcatinated, "M/dd/yyyy", CultureInfo.InvariantCulture);
                 var lastday = DateTime.DaysInMonth(Convert.ToInt32(txtYear.Text), Convert.ToInt32(txtMonth.Text));
                 var lastDayOfMonth = lastday.ToString();
@@ -135,9 +135,9 @@ namespace DailyCollectionAndPayments
                 var check = 0;
                 var lastDayconcatinated = "";
                 if (int.TryParse(enddDay, out check))
-                    lastDayconcatinated = txtMonth.Text + "/" + enddDay + "/" + txtYear.Text;
+                    lastDayconcatinated = monthNumber + "/" + enddDay + "/" + txtYear.Text;
                 else
-                    lastDayconcatinated = txtMonth.Text + "/" + lastDayOfMonth + "/" + txtYear.Text;
+                    lastDayconcatinated = monthNumber + "/" + lastDayOfMonth + "/" + txtYear.Text;
 
                 _collection.ExpectedEndDate = DateTime.ParseExact(lastDayconcatinated, "M/dd/yyyy", CultureInfo.InvariantCulture);
             }

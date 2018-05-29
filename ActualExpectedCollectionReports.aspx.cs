@@ -23,6 +23,7 @@ namespace DailyCollectionAndPayments
             {
                 BindYearDropDown();
                 BindMonthsDropdown();
+                BindGridData();
             }
         }
 
@@ -42,6 +43,11 @@ namespace DailyCollectionAndPayments
         }
 
         protected void btnShowReport_OnClick(object sender, EventArgs e)
+        {
+            BindGridData();
+        }
+
+        private void BindGridData()
         {
             try
             {
