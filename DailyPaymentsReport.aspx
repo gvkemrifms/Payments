@@ -4,7 +4,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
     <script type="text/javascript">
-        $(function() {
+     <%--   $(function() {
             $('#<%= ddlState.ClientID %>').select2({
                 disable_search_threshold: 5,
                 search_contains: true,
@@ -23,7 +23,7 @@
                 minimumResultsForSearch: 2,
                 placeholder: "Select an option"
             });
-        });
+        });--%>
 
         function UserDeleteConfirmation() {
             if (confirm("Are you sure you want to delete this Record?"))
@@ -38,19 +38,13 @@
                 changeYear: true,
                 maxDate: 0
             });
-            $('#<%= ddlState.ClientID %>').select2({
+            $('#<%= ddlState.ClientID %>,#<%= ddlProject.ClientID %>,#<%= ddlSelectPayment.ClientID %>').select2({
                 disable_search_threshold: 5,
                 search_contains: true,
                 minimumResultsForSearch: 20,
                 placeholder: "Select an option"
             });
-            $('#<%= ddlProject.ClientID %>').select2({
-                disable_search_threshold: 5,
-                search_contains: true,
-                minimumResultsForSearch: 20,
-                placeholder: "Select an option"
-            });
-
+            
         });
 
         function Validations() {
@@ -72,10 +66,11 @@
             return true;
         }
 
-        function numericOnly(elementRef) {
-
-            var keyCodeEntered = (event.which) ? event.which : (window.event.keyCode) ? window.event.keyCode : -1;
-            return (keyCodeEntered >= 48) && (keyCodeEntered <= 57) || keyCodeEntered === 46;
+        function numeric_only(e) {
+            var keycode;
+            if (window.event || event || e) keycode = window.event.keyCode;
+            else return true;
+            return keycode >= 48 && keycode <= 57;
         }
     </script>
 
@@ -128,10 +123,10 @@
         </tr>
         <tr>
             <td>
-                Amount<span style="color: red">*</span>
+                Amount (In Lakhs)<span style="color: red">*</span>
             </td>
             <td>
-                <asp:TextBox ID="txtAmount" runat="server" placeholder="Enter Amount" onkeypress="return numericOnly(this)"></asp:TextBox>
+                <asp:TextBox ID="txtAmount" runat="server" placeholder="Enter Amount" onkeypress="return numeric_only(event)"></asp:TextBox>
             </td>
         </tr>
 

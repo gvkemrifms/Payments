@@ -15,7 +15,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DailyCollectionAndPayments</RootNamespace>
     <AssemblyName>DailyCollectionAndPayments</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -24,6 +24,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -1562,6 +1563,7 @@
     <Content Include="js\jquery-1.11.1.js" />
     <Content Include="js\jquery-ui-timepicker-addon.js" />
     <Content Include="js\jquery.canvasjs.min.js" />
+    <Content Include="js\sb-admin-2.js" />
     <Content Include="js\ui\jquery-ui.css" />
     <Content Include="js\ui\jquery-ui.js" />
     <Content Include="Login.aspx" />
@@ -1632,6 +1634,9 @@
     <Content Include="css\ionicons-master\scss\_ionicons-font.scss" />
     <Content Include="css\ionicons-master\scss\_ionicons-icons.scss" />
     <Content Include="css\ionicons-master\scss\_ionicons-variables.scss" />
+    <Content Include="Less\mixins.less" />
+    <Content Include="Less\sb-admin-2.less" />
+    <Content Include="Less\variables.less" />
     <None Include="scripts\jquery-1.12.4.intellisense.js" />
     <Content Include="PaymentsReport.aspx" />
     <Content Include="scripts\jquery-1.12.4.js" />

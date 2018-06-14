@@ -65,13 +65,13 @@ namespace DailyCollectionAndPayments
         {
             if (btnSave.Text == "Save")
             {
-                _helper.InsertCollectionDetails(Convert.ToInt32(ddlState.SelectedValue), Convert.ToInt32(ddlProject.SelectedValue), Convert.ToDateTime(txtDate.Text), Convert.ToDecimal(txtAmount.Text), Convert.ToInt32(UserId));
+                _helper.InsertCollectionDetails(Convert.ToInt32(ddlState.SelectedValue), Convert.ToInt32(ddlProject.SelectedValue), Convert.ToDateTime(txtDate.Text), Convert.ToInt32(txtAmount.Text), Convert.ToInt32(UserId));
                 Show("Successfully Inserted");
             }
             else
             {
                 var cid = Session["IdCol"].ToString();
-                _helper.UpdateCollectionDetails(Convert.ToInt32(ddlProject.SelectedValue), Convert.ToDateTime(txtDate.Text), Convert.ToDecimal(txtAmount.Text), Convert.ToInt32(UserId), Convert.ToInt32(cid));
+                _helper.UpdateCollectionDetails(Convert.ToInt32(ddlProject.SelectedValue), Convert.ToDateTime(txtDate.Text), Convert.ToInt32(txtAmount.Text), Convert.ToInt32(UserId), Convert.ToInt32(cid));
                 btnSave.Text = "Save";
                 Show("Successfully Updated");
             }

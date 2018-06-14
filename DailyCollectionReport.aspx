@@ -6,21 +6,7 @@
 
 
     <script type="text/javascript">
-        $(function() {
-            $('#<%= ddlState.ClientID %>').select2({
-                disable_search_threshold: 5,
-                search_contains: true,
-                minimumResultsForSearch: 2,
-                placeholder: "Select an option"
-            });
-            $('#<%= ddlProject.ClientID %>').select2({
-                disable_search_threshold: 5,
-                search_contains: true,
-                minimumResultsForSearch: 2,
-                placeholder: "Select an option"
-            });
-        });
-
+       
         function UserDeleteConfirmation() {
             if (confirm("Are you sure you want to delete this user?"))
                 return true;
@@ -30,23 +16,17 @@
 
         $(function() {
             $('#<%= txtDate.ClientID %>').datepicker({
+                dateFormat: 'mm/dd/yy',
                 changeMonth: true,
                 changeYear: true,
                 maxDate: 0
             });
-            $('#<%= ddlState.ClientID %>').select2({
+            $('#<%= ddlState.ClientID %>,#<%= ddlProject.ClientID %>').select2({
                 disable_search_threshold: 5,
                 search_contains: true,
                 minimumResultsForSearch: 20,
                 placeholder: "Select an option"
             });
-            $('#<%= ddlProject.ClientID %>').select2({
-                disable_search_threshold: 5,
-                search_contains: true,
-                minimumResultsForSearch: 20,
-                placeholder: "Select an option"
-            });
-
         });
 
         function Validations() {
@@ -58,28 +38,17 @@
                 return alert("Please select Project");
             var validDate = $('#<%= txtDate.ClientID %>').val();
             var amount = $('#<%= txtAmount.ClientID %>').val();
-            if (validDate == '')
+            if (validDate === '')
                 return alert('Please enter  Date');
-            if (amount == '')
+            if (amount === '')
                 return alert('Please enter  Amount');
             return true;
         }
-
-        function numericOnly(elementRef) {
-
-            var keyCodeEntered = (event.which) ? event.which : (window.event.keyCode) ? window.event.keyCode : -1;
-            if ((keyCodeEntered >= 48) && (keyCodeEntered <= 57)) {
-                return true;
-            }
-            // '.' decimal point...  
-            else if (keyCodeEntered === 46) {
-                // Allow only 1 decimal point ('.')...  
-                if ((elementRef.value) && (elementRef.value.indexOf('.') >= 0))
-                    return false;
-                else
-                    return true;
-            }
-            return false;
+        function numeric_only(e) {
+            var keycode;
+            if (window.event || event || e) keycode = window.event.keyCode;
+            else return true;
+            return keycode >= 48 && keycode <= 57;
         }
     </script>
     <table align="center">
@@ -122,10 +91,10 @@
 
         <tr>
             <td>
-                Amount<span style="color: red">*</span>
+                Amount (In Lakhs)<span style="color: red">*</span>
             </td>
             <td>
-                <asp:TextBox ID="txtAmount" runat="server" placeholder="Enter Amount" onkeypress="return numericOnly(this)"></asp:TextBox>
+                <asp:TextBox ID="txtAmount" runat="server" placeholder="Enter Amount" onkeypress="return numeric_only(event)"></asp:TextBox>
             </td>
         </tr>
 

@@ -8,24 +8,12 @@
 
     <script type="text/javascript">
         $(function() {
-            $('#<%= ddlState.ClientID %>').select2({
+            $('#<%= ddlState.ClientID %>,#<%= ddlProject.ClientID %>,#<%= ddldate.ClientID %>').select2({
                 disable_search_threshold: 5,
                 search_contains: true,
                 minimumResultsForSearch: 2,
                 placeholder: "Select an option"
-            });
-            $('#<%= ddlProject.ClientID %>').select2({
-                disable_search_threshold: 5,
-                search_contains: true,
-                minimumResultsForSearch: 2,
-                placeholder: "Select an option"
-            });
-            $('#<%= ddldate.ClientID %>').select2({
-                disable_search_threshold: 5,
-                search_contains: true,
-                minimumResultsForSearch: 10,
-                placeholder: "Select an option"
-            });
+            });            
         });
 
         function UserDeleteConfirmation() {
@@ -53,21 +41,11 @@
             return true;
         }
 
-        function numericOnly(elementRef) {
-
-            var keyCodeEntered = (event.which) ? event.which : (window.event.keyCode) ? window.event.keyCode : -1;
-            if ((keyCodeEntered >= 48) && (keyCodeEntered <= 57)) {
-                return true;
-            }
-            // '.' decimal point...  
-            else if (keyCodeEntered === 46) {
-                // Allow only 1 decimal point ('.')...  
-                if ((elementRef.value) && (elementRef.value.indexOf('.') >= 0))
-                    return false;
-                else
-                    return true;
-            }
-            return false;
+        function numeric_only(e) {
+            var keycode;
+            if (window.event || event || e) keycode = window.event.keyCode;
+            else return true;
+            return keycode >= 48 && keycode <= 57;
         }
     </script>
     <table align="center">
@@ -104,7 +82,7 @@
                 Year<span style="color: red">*</span>
             </td>
             <td>
-                <asp:TextBox ID="txtYear" runat="server" placeholder="Year" ReadOnly="True" style="color: gray" onkeypress="return numericOnly(this)" OnTextChanged="txtYear_TextChanged"></asp:TextBox>
+                <asp:TextBox ID="txtYear" runat="server" placeholder="Year" ReadOnly="True" style="color: gray" onkeypress="return numeric_only(event)" OnTextChanged="txtYear_TextChanged"></asp:TextBox>
             </td>
         </tr>
 
@@ -113,7 +91,7 @@
                 Month<span style="color: red">*</span>
             </td>
             <td>
-                <asp:TextBox ID="txtMonth" runat="server" ReadOnly="True" style="color: gray" placeholder="Month" onkeypress="return numericOnly(this)"></asp:TextBox>
+                <asp:TextBox ID="txtMonth" runat="server" ReadOnly="True" style="color: gray" placeholder="Month" onkeypress="return numeric_only(event)"></asp:TextBox>
             </td>
         </tr>
 
@@ -129,10 +107,10 @@
         </tr>
         <tr>
             <td>
-                Amount<span style="color: red">*</span>
+                Amount (In Lakhs)<span style="color: red">*</span>
             </td>
             <td>
-                <asp:TextBox ID="txtAmount" runat="server" placeholder="Enter Amount" onkeypress="return numericOnly(this)"></asp:TextBox>
+                <asp:TextBox ID="txtAmount" runat="server" placeholder="Enter Amount" onkeypress="return numeric_only(event)"></asp:TextBox>
             </td>
         </tr>
 

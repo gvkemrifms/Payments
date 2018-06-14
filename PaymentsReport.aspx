@@ -3,18 +3,12 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <script type="text/javascript">
         $(function() {
-            $('#<%= ddlMonth.ClientID %>').select2({
+            $('#<%= ddlMonth.ClientID %>,#<%= ddlYear.ClientID %>').select2({
                 disable_search_threshold: 5,
                 search_contains: true,
                 minimumResultsForSearch: 2,
                 placeholder: "Select an option"
-            });
-            $('#<%= ddlYear.ClientID %>').select2({
-                disable_search_threshold: 5,
-                search_contains: true,
-                minimumResultsForSearch: 2,
-                placeholder: "Select an option"
-            });
+            });          
         });
     </script>
     <table align="center">
@@ -55,7 +49,8 @@
     </table>
     <br/>
     <asp:Panel ID="lblPaymentReport" runat="server">
-        <asp:GridView ID="gvPaymentsReport" runat="server" style="flex-wrap: nowrap; margin-top: 20px; width: 90%" EmptyDataText="No Records Found" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="3">
+        <h4 align="center" style="color: brown">Daily Payments Report</h4>
+        <asp:GridView ID="gvPaymentsReport" runat="server" style="flex-wrap: nowrap; margin-top: 20px; width: 90%" EmptyDataText="No Records Found" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" GridLines="Both" CellPadding="3">
             <RowStyle Wrap="False"/>
             <EmptyDataRowStyle Wrap="False"/>
             <FooterStyle BackColor="White" ForeColor="#000066" Wrap="false"/>

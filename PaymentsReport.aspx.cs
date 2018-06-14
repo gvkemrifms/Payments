@@ -11,8 +11,7 @@ namespace DailyCollectionAndPayments
     {
         private readonly Helper _helper = new Helper();
         public string UserId;
-
-        protected void Page_Load(object sender, EventArgs e)
+        protected void Page_Load(object sender,EventArgs e)
         {
             if (Session["UserId"] == null)
                 Response.Redirect("Login.aspx");
@@ -25,7 +24,6 @@ namespace DailyCollectionAndPayments
                 BindGrid();
             }
         }
-
         private void BindGrid()
         {
             try
@@ -43,6 +41,9 @@ namespace DailyCollectionAndPayments
                         sbclm.Append("`" + row["ProjectName"] + "`,");
                     }
 
+                    sb.Append("SUM(IF(MONTH(`pay_date`)=" + ddlMonth.SelectedValue + " AND YEAR(`pay_date`)=" + ddlYear.SelectedValue + ",amount,NULL))'Total'");
+                    sbclm.Append("t.");
+                    sbclm.Append("`Total`");
                     var sbResult = sb.ToString().TrimEnd(',');
                     var sblist = sbclm.ToString().TrimEnd(',');
                     var query1 = "SELECT `payment_name`," + sblist + "  FROM `m_payments`  mt LEFT JOIN (SELECT `payment_type_id`, " + sbResult + " from t_payments  GROUP BY payment_type_id  ) T ON mt.`payment_type_id`= T.`payment_type_id` union SELECT 'Total', " + sbResult + " from t_payments   ";
@@ -57,39 +58,34 @@ namespace DailyCollectionAndPayments
                 _helper.ErrorsEntry(ex);
             }
         }
-
         private void BindYearDropDown()
         {
             for (var i = 2018; i <= 2025; i++) ddlYear.Items.Add(i.ToString());
             ddlYear.SelectedItem.Text = DateTime.Now.Year.ToString();
         }
-
         private void BindMonthsDropdown()
         {
             var months = CultureInfo.CurrentCulture.DateTimeFormat.MonthNames;
-            for (var i = 0; i < 13; i++) ddlMonth.Items.Add(new ListItem(months[i], (i + 1).ToString()));
-            ddlMonth.Items.Insert(0, "--Select--");
+            for (var i = 0; i < 13; i++) ddlMonth.Items.Add(new ListItem(months[i],(i + 1).ToString()));
+            ddlMonth.Items.Insert(0,"--Select--");
             var month = ddlMonth.Items.FindByText(DateTime.Today.ToString("MMMM")).ToString();
             ddlMonth.Items.FindByText(month).Selected = true;
         }
-
-        protected void btnShowReport_Click(object sender, EventArgs e)
+        protected void btnShowReport_Click(object sender,EventArgs e)
         {
             BindGrid();
         }
-
-        protected void ExportToExcel_Click(object sender, EventArgs e)
+        protected void ExportToExcel_Click(object sender,EventArgs e)
         {
             try
             {
-                _helper.LoadExcelSpreadSheet(this, lblPaymentReport, "PaymentsReport.xls", null);
+                _helper.LoadExcelSpreadSheet(this,lblPaymentReport,"PaymentsReport.xls",null);
             }
             catch (Exception ex)
             {
                 _helper.ErrorsEntry(ex);
             }
         }
-
         public override void VerifyRenderingInServerForm(Control control)
         {
         }

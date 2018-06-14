@@ -10,14 +10,14 @@ namespace DailyCollectionAndPayments
     public partial class DailyCollectionReportDetails : System.Web.UI.Page
     {
         readonly Helper _helper = new Helper();
-        public string _userId;
+        public string UserId;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["UserId"] == null)
                 Response.Redirect("Login.aspx");
             else
             {
-                _userId = (string)Session["UserId"];
+                UserId = (string)Session["UserId"];
             }
             if(!IsPostBack)
             BindGridDetails();
@@ -28,8 +28,8 @@ namespace DailyCollectionAndPayments
             try
             {
                
-                _helper.FillDropDownHelperMethodWithSp("userCollection_grid", null,null,null,null,"@uid", _userId,null,GvCollections);
-                _helper.FillDropDownHelperMethodWithSp("userpayments_grid", null, null, null, null, "@uid", _userId, null,GvPayments);
+                _helper.FillDropDownHelperMethodWithSp("userCollection_grid", null,null,null,null,"@uid", UserId,null,GvCollections);
+                _helper.FillDropDownHelperMethodWithSp("userpayments_grid", null, null, null, null, "@uid", UserId, null,GvPayments);
             }
             catch (Exception ex)
             {

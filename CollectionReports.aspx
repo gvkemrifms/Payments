@@ -3,13 +3,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <script type="text/javascript">
         $(function() {
-            $('#<%= ddlMonth.ClientID %>').select2({
-                disable_search_threshold: 5,
-                search_contains: true,
-                minimumResultsForSearch: 2,
-                placeholder: "Select an option"
-            });
-            $('#<%= ddlYear.ClientID %>').select2({
+            $('#<%= ddlMonth.ClientID %>,#<%= ddlYear.ClientID %>').select2({
                 disable_search_threshold: 5,
                 search_contains: true,
                 minimumResultsForSearch: 2,
@@ -55,7 +49,7 @@
     </table>
     <br/>
     <asp:Panel ID="pnlCollectionReport" runat="server">
-
+        <h4 align="center" style="color: brown">Daily Collecection Report</h4>
         <asp:GridView ID="gvCollectionReport" runat="server" GridLines="Both" style="margin-top: 20px" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="3">
             <FooterStyle BackColor="White" ForeColor="#000066"/>
             <HeaderStyle BackColor="#006699" Font-Bold="True" ForeColor="White"/>
@@ -67,6 +61,5 @@
             <SortedDescendingCellStyle BackColor="#CAC9C9"/>
             <SortedDescendingHeaderStyle BackColor="#00547E"/>
         </asp:GridView>
-
     </asp:Panel>
 </asp:Content>

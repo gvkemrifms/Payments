@@ -24,16 +24,14 @@ namespace DailyCollectionAndPayments
                 return;
             }
           VerifyLoginDetails clslogin = new VerifyLoginDetails();
-            DataTable dtLogin = new DataTable();
-            dtLogin = clslogin.VerifyUser(txtloginemail.Text, txtPassword.Text);
+            var dtLogin = clslogin.VerifyUser(txtloginemail.Text, txtPassword.Text);
           
             if (dtLogin.Rows.Count > 0)
             {
                // Session["UserId"] = dtLogin.Rows[0][0].ToString();
-                string strUserId, strRoleId, strUserName;
-                strUserId = dtLogin.Rows[0]["user_id"].ToString();
-                strRoleId = dtLogin.Rows[0]["role_id"].ToString();
-                strUserName = dtLogin.Rows[0]["user_name"].ToString();
+                var strUserId = dtLogin.Rows[0]["user_id"].ToString();
+                var strRoleId = dtLogin.Rows[0]["role_id"].ToString();
+                var strUserName = dtLogin.Rows[0]["user_name"].ToString();
                 Session["user_name"] = dtLogin.Rows[0]["user_id"].ToString();
                 Session["UserId"] = strUserId;
                 Session["RoleId"] = strRoleId;
