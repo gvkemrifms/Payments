@@ -14,7 +14,7 @@
     <table align="center">
         <tr>
             <td>
-                <h4 style="color: brown; margin-top: 1px">Payments Reports</h4>
+                <h4 style="color: brown; margin-top: 1px">Payments Statement</h4>
             </td>
         </tr>
         <br/>
@@ -49,7 +49,7 @@
     </table>
     <br/>
     <asp:Panel ID="lblPaymentReport" runat="server">
-        <h4 align="center" style="color: brown">Daily Payments Report</h4>
+        <h4 align="center" style="color: brown">Daily Payments Statement (In Lakhs)</h4>
         <asp:GridView ID="gvPaymentsReport" runat="server" style="flex-wrap: nowrap; margin-top: 20px; width: 90%" EmptyDataText="No Records Found" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" GridLines="Both" CellPadding="3">
             <RowStyle Wrap="False"/>
             <EmptyDataRowStyle Wrap="False"/>

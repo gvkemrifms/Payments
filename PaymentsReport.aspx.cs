@@ -28,7 +28,11 @@ namespace DailyCollectionAndPayments
         {
             try
             {
-                var query = "SELECT pm.project_id,pm.state_id,CONCAT(s.short_name, ' - ' ,p.project_name) ProjectName FROM t_projectmapping pm JOIN `m_projects` p ON p.project_id = pm.project_id JOIN `m_states`  s ON s.state_id = pm.state_id WHERE pm.isactive = 1 ORDER BY ProjectName";
+                string query;
+                if(UserId!="16")
+                 query = "SELECT pm.project_id,pm.state_id,CONCAT(s.short_name, ' - ' ,p.project_name) ProjectName FROM t_projectmapping pm left JOIN `m_projects` p ON p.project_id = pm.project_id left JOIN `m_states`  s ON s.state_id = pm.state_id  WHERE pm.user_id = "+UserId+" ORDER BY ProjectName";
+                else
+                    query = "SELECT pm.project_id,pm.state_id,CONCAT(s.short_name, ' - ' ,p.project_name) ProjectName FROM t_projectmapping pm left JOIN `m_projects` p ON p.project_id = pm.project_id left JOIN `m_states`  s ON s.state_id = pm.state_id  ORDER BY ProjectName";
                 var dtPaymentsReport = _helper.ExecuteSelectStmt(query);
                 if (dtPaymentsReport.Rows.Count > 0)
                 {

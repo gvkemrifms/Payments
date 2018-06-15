@@ -53,6 +53,45 @@ namespace DailyCollectionAndPayments
                 }
             }
         }
+        public void FillDropDownHelperMethodWithSp2(string commandText, string textFieldValue = null, string valueField = null, DropDownList dropDownValue = null, DropDownList dropDownValue1 = null, string parameterValue = null, string uid = null, string parameterValue1 = null, GridView gvCollections = null,string parameterValue2=null)
+        {
+            var connString = ConfigurationManager.AppSettings["GvkEmriCon"];
+            var conn = new MySqlConnection(connString);
+            var ds = new DataSet();
+
+            conn.Open();
+            var cmd = new MySqlCommand { Connection = conn, CommandType = CommandType.StoredProcedure, CommandText = commandText };
+            if (dropDownValue != null)
+            {
+                if (parameterValue != null)
+                    cmd.Parameters.AddWithValue(parameterValue, Convert.ToInt32(dropDownValue.SelectedValue));
+                if (parameterValue1 != null)
+                    if (dropDownValue1 != null)
+                        cmd.Parameters.AddWithValue(parameterValue1, Convert.ToInt32(dropDownValue1.SelectedValue));
+                if (parameterValue2 != null)
+                    cmd.Parameters.AddWithValue(parameterValue2, uid);
+                var da = new MySqlDataAdapter(cmd);
+                da.Fill(ds);
+                var dt = ds.Tables[0];
+                if (dt.Rows.Count > 0)
+                {
+                    dt.Columns[0].ColumnName = "STATES";
+                    if (gvCollections != null)
+                    {
+                        gvCollections.DataSource = dt;
+                        gvCollections.DataBind();
+                    }
+                }
+                else
+                {
+                    if (gvCollections != null)
+                    {
+                        gvCollections.DataSource = null;
+                        gvCollections.DataBind();
+                    }
+                }
+            }
+        }
 
         private static void CommonMethod(string textFieldValue, string valueField, DropDownList dropDownValue, DataSet ds, MySqlCommand cmd)
         {

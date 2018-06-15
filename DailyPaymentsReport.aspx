@@ -4,27 +4,6 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
     <script type="text/javascript">
-     <%--   $(function() {
-            $('#<%= ddlState.ClientID %>').select2({
-                disable_search_threshold: 5,
-                search_contains: true,
-                minimumResultsForSearch: 2,
-                placeholder: "Select an option"
-            });
-            $('#<%= ddlProject.ClientID %>').select2({
-                disable_search_threshold: 5,
-                search_contains: true,
-                minimumResultsForSearch: 2,
-                placeholder: "Select an option"
-            });
-            $('#<%= ddlSelectPayment.ClientID %>').select2({
-                disable_search_threshold: 5,
-                search_contains: true,
-                minimumResultsForSearch: 2,
-                placeholder: "Select an option"
-            });
-        });--%>
-
         function UserDeleteConfirmation() {
             if (confirm("Are you sure you want to delete this Record?"))
                 return true;
@@ -106,7 +85,7 @@
 
         <tr>
             <td>
-                PaymentType<span style="color: red">*</span>
+                Payment Type<span style="color: red">*</span>
             </td>
             <td>
                 <asp:DropDownList ID="ddlSelectPayment" CssClass="search_3" runat="server" Width="150px"></asp:DropDownList>

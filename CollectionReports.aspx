@@ -14,7 +14,7 @@
     <table align="center">
         <tr>
             <td>
-                <h4 style="color: brown; margin-top: 1px">Collection Reports</h4>
+                <h4 style="color: brown; margin-top: 1px">Collection Statement</h4>
             </td>
         </tr>
         <br/>
@@ -48,8 +48,8 @@
         </tr>
     </table>
     <br/>
-    <asp:Panel ID="pnlCollectionReport" runat="server">
-        <h4 align="center" style="color: brown">Daily Collecection Report</h4>
+    <asp:Panel ID="pnlCollectionReport" HorizontalAlign="Center" runat="server">
+        <h4 align="center" style="color: brown">Daily Collection Statement (In Lakhs)</h4>
         <asp:GridView ID="gvCollectionReport" runat="server" GridLines="Both" style="margin-top: 20px" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="3">
             <FooterStyle BackColor="White" ForeColor="#000066"/>
             <HeaderStyle BackColor="#006699" Font-Bold="True" ForeColor="White"/>

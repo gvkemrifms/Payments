@@ -26,7 +26,10 @@ namespace DailyCollectionAndPayments
         {
             try
             {
+                if(UserId == "16")
                 _helper.FillDropDownHelperMethodWithSp1("report_statewise_daywise",null,null,ddlYear,ddlMonth,"@yr",null,"@mnt",gvCollectionReport);
+                else
+                   _helper.FillDropDownHelperMethodWithSp2("report_states_daywise", null, null, ddlYear, ddlMonth, "@yr",UserId, "@mnt", gvCollectionReport,"@uid");
             }
             catch (Exception ex)
             {
