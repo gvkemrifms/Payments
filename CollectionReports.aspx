@@ -49,7 +49,7 @@
     </table>
     <br/>
     <asp:Panel ID="pnlCollectionReport" HorizontalAlign="Center" runat="server">
-        <h4 align="center" style="color: brown">Daily Collection Statement (In Lakhs)</h4>
+        <h4 align="center" style="color: brown">Daily Collection Statement (Rs. In Lakhs)</h4>
         <asp:GridView ID="gvCollectionReport" runat="server" GridLines="Both" style="margin-top: 20px" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="3">
             <FooterStyle BackColor="White" ForeColor="#000066"/>
             <HeaderStyle BackColor="#006699" Font-Bold="True" ForeColor="White"/>

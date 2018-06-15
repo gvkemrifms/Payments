@@ -66,4 +66,3 @@ D:\NTPC_FMS\DailyCollectionAndPayments\DailyCollectionAndPayments\bin\Google.Pro
 D:\NTPC_FMS\DailyCollectionAndPayments\DailyCollectionAndPayments\bin\MySql.Data.xml
 D:\NTPC_FMS\DailyCollectionAndPayments\DailyCollectionAndPayments\obj\Debug\DailyCollectionAndPayments.dll
 D:\NTPC_FMS\DailyCollectionAndPayments\DailyCollectionAndPayments\obj\Debug\DailyCollectionAndPayments.pdb
-D:\NTPC_FMS\DailyCollectionAndPayments\DailyCollectionAndPayments\obj\Debug\DailyCollectionAndPayments.csprojResolveAssemblyReference.cache

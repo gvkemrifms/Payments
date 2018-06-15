@@ -133,5 +133,19 @@ namespace DailyCollectionAndPayments
         protected void lnkSendEmail_OnClick(object sender, EventArgs e)
         {
         }
+        protected void ExportToExcel_Click(object sender,EventArgs e)
+        {
+            try
+            {
+                _helper.LoadExcelSpreadSheet(this, pnlActualExpectedCollectionReport, "ActualExpectedCollectionReport.xls");
+            }
+            catch (Exception ex)
+            {
+                _helper.ErrorsEntry(ex);
+            }
+        }
+        public override void VerifyRenderingInServerForm(Control control)
+        {
+        }
     }
 }

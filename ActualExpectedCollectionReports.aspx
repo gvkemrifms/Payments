@@ -1,4 +1,4 @@
-﻿<%@Page Language="C#" AutoEventWireup="true" MasterPageFile="~/DCP.Master" CodeBehind="ActualExpectedCollectionReports.aspx.cs" Inherits="DailyCollectionAndPayments.ActualExpectedCollectionReports" %>
+﻿<%@Page Language="C#" AutoEventWireup="true" MasterPageFile="~/DCP.Master" CodeBehind="ActualExpectedCollectionReports.aspx.cs" Inherits="DailyCollectionAndPayments.ActualExpectedCollectionReports" EnableEventValidation="false" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <script type="text/javascript">
@@ -37,11 +37,15 @@
             <td>
                 <asp:Button ID="btnShowReport" runat="server" CssClass="form-submit-button" Text="Show Report" OnClick="btnShowReport_OnClick"/>
             </td>
+            <td>
+                <asp:Button runat="server" Text="Excel Report" class="form-reset-button" OnClick="ExportToExcel_Click"></asp:Button>
+            </td>
 
         </tr>
     </table>
     <br/>
-    <div align="center">
+    <asp:Panel ID="pnlActualExpectedCollectionReport" HorizontalAlign="Center" runat="server">
+        <h4 align="center" style="color: brown">Actual And Expected Collection Statement (Rs. In Lakhs)</h4>
         <asp:GridView ID="gvActualCollectionReport" runat="server" EmptyDataText="No Records Found" style="flex-wrap: nowrap" AutoGenerateColumns="False"
                       CssClass="gridview"
                       CellPadding="1" BorderColor="#CCCCCC" border-width="1px"
@@ -133,5 +137,5 @@
             <SortedDescendingCellStyle BackColor="#CAC9C9"/>
             <SortedDescendingHeaderStyle BackColor="#00547E"/>
         </asp:GridView>
-    </div>
+  </asp:Panel>
 </asp:Content>

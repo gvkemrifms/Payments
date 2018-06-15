@@ -40,6 +40,15 @@ namespace DailyCollectionAndPayments {
         protected global::System.Web.UI.WebControls.Button btnShowReport;
         
         /// <summary>
+        /// pnlActualExpectedCollectionReport control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlActualExpectedCollectionReport;
+        
+        /// <summary>
         /// gvActualCollectionReport control.
         /// </summary>
         /// <remarks>
