@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -26,8 +30,16 @@ namespace DailyCollectionAndPayments
         {
             try
             {
-                if(UserId == "16")
-                _helper.FillDropDownHelperMethodWithSp1("report_statewise_daywise",null,null,ddlYear,ddlMonth,"@yr",null,"@mnt",gvCollectionReport);
+                string query = "select user_id from m_user_role where user_id="+UserId+" and role_id=1";
+                DataTable dt=_helper.ExecuteSelectStmt(query);
+                if (dt.Rows.Count > 0)
+                {
+                   int value= dt.Rows[0].Field<int>("user_id");
+                   
+                        if (UserId == value.ToString())
+                            _helper.FillDropDownHelperMethodWithSp1("report_statewise_daywise",null,null,ddlYear,ddlMonth,"@yr",null,"@mnt",gvCollectionReport);
+
+                }
                 else
                    _helper.FillDropDownHelperMethodWithSp2("report_states_daywise", null, null, ddlYear, ddlMonth, "@yr",UserId, "@mnt", gvCollectionReport,"@uid");
             }

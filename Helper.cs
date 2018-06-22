@@ -92,7 +92,28 @@ namespace DailyCollectionAndPayments
                 }
             }
         }
+        public DataSet FillDropDownHelperMethodWithSp3(string commandText, string textFieldValue = null, string valueField = null, DropDownList dropDownValue = null, DropDownList dropDownValue1 = null, string parameterValue = null, string hiddenfield = null, string parameterValue1 = null, GridView gvCollections = null, string parameterValue2 = null)
+        {
+            var connString = ConfigurationManager.AppSettings["GvkEmriCon"];
+            var conn = new MySqlConnection(connString);
+            var ds = new DataSet();
 
+            conn.Open();
+            var cmd = new MySqlCommand { Connection = conn, CommandType = CommandType.StoredProcedure, CommandText = commandText };
+            if (dropDownValue != null)
+            {
+                if (parameterValue != null)
+                    cmd.Parameters.AddWithValue(parameterValue, Convert.ToInt32(dropDownValue.SelectedValue));
+                if (parameterValue1 != null)
+                    if (dropDownValue1 != null)
+                        cmd.Parameters.AddWithValue(parameterValue1, Convert.ToInt32(dropDownValue1.SelectedValue));
+                if (parameterValue2 != null)
+                    cmd.Parameters.AddWithValue(parameterValue2, hiddenfield);
+                var da = new MySqlDataAdapter(cmd);
+                da.Fill(ds);
+            }
+            return ds;
+        }
         private static void CommonMethod(string textFieldValue, string valueField, DropDownList dropDownValue, DataSet ds, MySqlCommand cmd)
         {
             var da = new MySqlDataAdapter(cmd);
@@ -145,6 +166,13 @@ namespace DailyCollectionAndPayments
                     gvCollections.DataBind();
                 }
             }
+        }
+
+        public static string RemoveWhitespace( string input)
+        {
+            return new string(input.ToCharArray()
+                .Where(c => !char.IsWhiteSpace(c))
+                .ToArray());
         }
 
         public DataTable FillGrid(string commandText, DropDownList dropDownValue = null, DropDownList dropDownValue1 = null, string parameterValue = null, string parameterValue1 = null, GridView gvCollections = null)

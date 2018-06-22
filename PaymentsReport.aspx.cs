@@ -11,12 +11,22 @@ namespace DailyCollectionAndPayments
     {
         private readonly Helper _helper = new Helper();
         public string UserId;
+        public string HiddenVal{ get;set; }
         protected void Page_Load(object sender,EventArgs e)
         {
             if (Session["UserId"] == null)
                 Response.Redirect("Login.aspx");
             else
                 UserId = (string) Session["UserId"];
+            string data = myHiddenField.Value;
+            HiddenVal = Helper.RemoveWhitespace(data);
+            if (HiddenVal != "")
+            {
+                DataSet dsInfo= _helper.FillDropDownHelperMethodWithSp3("report_daywise_payments", null, null, ddlYear, ddlMonth, "@yr", HiddenVal, "@mnt", null, "@hiddenValue");
+                if (dsInfo.Tables[0].Rows.Count > 0)
+                    BindDataToDiv(dsInfo);
+            }
+
             if (!IsPostBack)
             {
                 BindMonthsDropdown();
@@ -24,15 +34,51 @@ namespace DailyCollectionAndPayments
                 BindGrid();
             }
         }
+
+        private void BindDataToDiv(DataSet dsInfo)
+        {
+            StringBuilder sbInfo = new StringBuilder();
+            sbInfo.Append("<table border = '1'>");
+            sbInfo.Append("<tr>");
+            foreach (DataColumn column in dsInfo.Tables[0].Columns)
+            {
+                sbInfo.Append("<th>");
+                sbInfo.Append(column.ColumnName);
+                sbInfo.Append("</th>");
+            }
+            sbInfo.Append("</tr>");
+            foreach (DataRow row in dsInfo.Tables[0].Rows)
+            {
+                sbInfo.Append("<tr>");
+                foreach (DataColumn column in dsInfo.Tables[0].Columns)
+                {
+                    sbInfo.Append("<td>");
+                    sbInfo.Append(row[column.ColumnName]);
+                    sbInfo.Append("</td>");
+                }
+                sbInfo.Append("</tr>");
+            }
+            sbInfo.Append("</table>");
+            PlaceHolder1.Controls.Add(new Literal { Text = sbInfo.ToString() });
+            Page.ClientScript.RegisterStartupScript(this.GetType(), "Dialog", "popup()", true);
+        }
+
         private void BindGrid()
         {
             try
             {
-                string query;
-                if(UserId!="16")
-                 query = "SELECT pm.project_id,pm.state_id,CONCAT(s.short_name, ' - ' ,p.project_name) ProjectName FROM t_projectmapping pm left JOIN `m_projects` p ON p.project_id = pm.project_id left JOIN `m_states`  s ON s.state_id = pm.state_id  WHERE pm.user_id = "+UserId+" ORDER BY ProjectName";
+                string query = null;
+                string userQuery = "select user_id from m_user_role where user_id=" + UserId + " and role_id=1";
+                DataTable dt = _helper.ExecuteSelectStmt(userQuery);
+                if (dt.Rows.Count > 0)
+                {
+                    int value = dt.Rows[0].Field<int>("user_id");
+                    if (UserId == value.ToString())
+                        query = "SELECT pm.project_id,pm.state_id,CONCAT(s.short_name, ' - ' ,p.project_name) ProjectName FROM t_projectmapping pm left JOIN `m_projects` p ON p.project_id = pm.project_id left JOIN `m_states`  s ON s.state_id = pm.state_id  ORDER BY ProjectName";
+                }
                 else
-                    query = "SELECT pm.project_id,pm.state_id,CONCAT(s.short_name, ' - ' ,p.project_name) ProjectName FROM t_projectmapping pm left JOIN `m_projects` p ON p.project_id = pm.project_id left JOIN `m_states`  s ON s.state_id = pm.state_id  ORDER BY ProjectName";
+                    query = "SELECT pm.project_id,pm.state_id,CONCAT(s.short_name, ' - ' ,p.project_name) ProjectName FROM t_projectmapping pm left JOIN `m_projects` p ON p.project_id = pm.project_id left JOIN `m_states`  s ON s.state_id = pm.state_id  WHERE pm.user_id = " + UserId + " ORDER BY ProjectName";
+
                 var dtPaymentsReport = _helper.ExecuteSelectStmt(query);
                 if (dtPaymentsReport.Rows.Count > 0)
                 {
@@ -93,5 +139,23 @@ namespace DailyCollectionAndPayments
         public override void VerifyRenderingInServerForm(Control control)
         {
         }
+        protected void gvPaymentsReport_OnRowDataBound(object sender,GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.Header)
+                foreach (TableCell c in e.Row.Cells)
+                {
+                    if (c.Text != "Payment" && c.Text != "Total")
+                    {
+                        myHiddenField.Value = Helper.RemoveWhitespace(HiddenVal);
+                        HiddenVal = c.Text;
+                        e.Row.Attributes.Add("onmouseover","mouseIn(this);");
+                        e.Row.Attributes.Add("onmouseout","mouseOut();");
+                        c.Attributes.Add("onclick", "DisplayToolTip('" + HiddenVal + "')");
+                        //c.Attributes.Add("onclick", Page.ClientScript.GetPostBackEventReference(this, myHiddenField.Value));
+                        //string jsPostBackCall=  ClientScript.GetPostBackEventReference(this, Helper.RemoveWhitespace(HiddenVal));
+
+                    }
+                }
+        }  
     }
 }
