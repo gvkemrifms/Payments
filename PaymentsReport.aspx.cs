@@ -14,25 +14,36 @@ namespace DailyCollectionAndPayments
         public string HiddenVal{ get;set; }
         protected void Page_Load(object sender,EventArgs e)
         {
+           
             if (Session["UserId"] == null)
                 Response.Redirect("Login.aspx");
             else
                 UserId = (string) Session["UserId"];
-            string data = myHiddenField.Value;
-            HiddenVal = Helper.RemoveWhitespace(data);
-            if (HiddenVal != "")
-            {
-                DataSet dsInfo= _helper.FillDropDownHelperMethodWithSp3("report_daywise_payments", null, null, ddlYear, ddlMonth, "@yr", HiddenVal, "@mnt", null, "@hiddenValue");
-                if (dsInfo.Tables[0].Rows.Count > 0)
-                    BindDataToDiv(dsInfo);
-            }
 
+            Bind();
+            //gvPaymentsReport.RowDataBound += new GridViewRowEventHandler(GvPaymentsReport_RowDataBound);
             if (!IsPostBack)
             {
                 BindMonthsDropdown();
                 BindYearDropDown();
                 BindGrid();
             }
+               
+        }
+      public void Bind()
+        {
+            string data = myHiddenField.Value;
+            HiddenVal = Helper.RemoveWhitespace(data);
+            if (HiddenVal != "")
+            {
+                DataSet dsInfo = _helper.FillDropDownHelperMethodWithSp3("report_daywise_payments", null, null, ddlYear, ddlMonth, "@yr", HiddenVal, "@mnt", null, "@hiddenValue");
+                if (dsInfo.Tables[0].Rows.Count > 0)
+                    BindDataToDiv(dsInfo);
+            }
+        }
+        private void GvPaymentsReport_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            
         }
 
         private void BindDataToDiv(DataSet dsInfo)
@@ -138,24 +149,48 @@ namespace DailyCollectionAndPayments
         }
         public override void VerifyRenderingInServerForm(Control control)
         {
-        }
-        protected void gvPaymentsReport_OnRowDataBound(object sender,GridViewRowEventArgs e)
+        }       
+        protected void gvPaymentsReport_RowDataBound1(object sender, GridViewRowEventArgs e)
         {
+            //LinkButton lnlPayments = new LinkButton();
+            //lnlPayments.ID = "lnkView";
             if (e.Row.RowType == DataControlRowType.Header)
+                
                 foreach (TableCell c in e.Row.Cells)
                 {
+                    //for(int i=0;i<=gvPaymentsReport.Columns.Count; i++)
+                    //{
+                    //    e.Row.Cells[i].Controls.Add(lnlPayments);
+                    //}
+                    //lnlPayments.Text = c.Text;
+                    //c.Controls.Add(lnlPayments);
                     if (c.Text != "Payment" && c.Text != "Total")
                     {
+
                         myHiddenField.Value = Helper.RemoveWhitespace(HiddenVal);
                         HiddenVal = c.Text;
-                        e.Row.Attributes.Add("onmouseover","mouseIn(this);");
-                        e.Row.Attributes.Add("onmouseout","mouseOut();");
+                        e.Row.Attributes.Add("onmouseover", "mouseIn(this);");
+                        e.Row.Attributes.Add("onmouseout", "mouseOut();");
                         c.Attributes.Add("onclick", "DisplayToolTip('" + HiddenVal + "')");
-                        //c.Attributes.Add("onclick", Page.ClientScript.GetPostBackEventReference(this, myHiddenField.Value));
+                        //e.Row.Attributes.Add("onclick", Page.ClientScript.GetPostBackEventReference(this.gvPaymentsReport, e.Row.RowIndex.ToString()));
+                        //c.Attributes.Add("onclick", Page.ClientScript.GetPostBackEventReference(c, myHiddenField.Value));
                         //string jsPostBackCall=  ClientScript.GetPostBackEventReference(this, Helper.RemoveWhitespace(HiddenVal));
 
                     }
                 }
-        }  
+        }
+
+        protected void gvPaymentsReport_Sorting(object sender, GridViewSortEventArgs e)
+        {
+            
+                myHiddenField.Value= e.SortExpression;
+            HiddenVal = Helper.RemoveWhitespace(myHiddenField.Value);
+            if (HiddenVal != "Payment" && HiddenVal != "Total")
+            {
+                DataSet dsInfo = _helper.FillDropDownHelperMethodWithSp3("report_daywise_payments", null, null, ddlYear, ddlMonth, "@yr", HiddenVal, "@mnt", null, "@hiddenValue");
+                if (dsInfo.Tables[0].Rows.Count > 0)
+                    BindDataToDiv(dsInfo);
+            }
+        }
     }
 }

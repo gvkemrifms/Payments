@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/DCP.Master" AutoEventWireup="true" CodeBehind="PaymentsReport.aspx.cs" Inherits="DailyCollectionAndPayments.PaymentsReport" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/DCP.Master" AutoEventWireup="true" CodeBehind="PaymentsReport.aspx.cs" EnableEventValidation="false" Inherits="DailyCollectionAndPayments.PaymentsReport" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <style >
@@ -58,8 +58,11 @@
             });          
         });
         function DisplayToolTip(i) {
-            alert(i+"  "+"(Selected). Please click on Report Button to get Daywise Payments Report");
-            document.getElementById('<%=myHiddenField.ClientID%>').value = i;
+             //alert(i+"  "+"(Selected). Please click on Payments Button to get Daywise Payments Report");
+             document.getElementById('<%=myHiddenField.ClientID%>').value = i;
+            
+         <%--   var formname = '<%=this.Page.Form.Name %>';
+            formname.submit();--%>
         }
         function mouseIn() {
             document.body.style.cursor = 'pointer';
@@ -115,6 +118,7 @@
             <td>
                 <asp:Button runat="server" Text="Excel Report" class="form-reset-button" OnClick="ExportToExcel_Click"></asp:Button>
             </td>
+            
         </tr>
     </table>
     <br/>
@@ -124,7 +128,7 @@
     <br/>
     <asp:Panel ID="lblPaymentReport" runat="server">
         <h4 align="center" style="color: brown">Daily Payments Statement (Rs. In Lakhs)</h4>
-        <asp:GridView ID="gvPaymentsReport" runat="server" style="flex-wrap: nowrap; margin-top: 20px; width: 90%" EmptyDataText="No Records Found" OnRowDataBound="gvPaymentsReport_OnRowDataBound" BackColor="White" BorderColor="#CCCCCC"  BorderStyle="None"  BorderWidth="1px" GridLines="Both" CellPadding="3">
+        <asp:GridView ID="gvPaymentsReport" runat="server" style="flex-wrap: nowrap; margin-top: 20px; width: 90%" EmptyDataText="No Records Found"   OnRowDataBound="gvPaymentsReport_RowDataBound1"  BackColor="White" AllowSorting="true" OnSorting="gvPaymentsReport_Sorting" BorderColor="#CCCCCC"  BorderStyle="None"  BorderWidth="1px" GridLines="Both" CellPadding="3">
             <RowStyle Wrap="False"/>
             <EmptyDataRowStyle Wrap="False"/>
             <FooterStyle BackColor="White" ForeColor="#000066" Wrap="false"/>
@@ -136,6 +140,8 @@
             <SortedDescendingCellStyle BackColor="#CAC9C9"/>
             <SortedDescendingHeaderStyle BackColor="#00547E"/>
 
+
         </asp:GridView>
     </asp:Panel>
 </asp:Content>
+

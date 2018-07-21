@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Globalization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -20,6 +21,7 @@ namespace DailyCollectionAndPayments
             {
                 BindStatesData();
                 txtDate.Text = DateTime.Now.Date.ToShortDateString();
+               // txtDate.Text= DateTime.ParseExact(DateTime.Now.Date.ToString(), "MM/dd/yyyy", CultureInfo.InvariantCulture).ToString();
                 BindGridDetails();
             }
         }
@@ -65,7 +67,7 @@ namespace DailyCollectionAndPayments
         {
             if (btnSave.Text == "Save")
             {
-                _helper.InsertCollectionDetails(Convert.ToInt32(ddlState.SelectedValue), Convert.ToInt32(ddlProject.SelectedValue), Convert.ToDateTime(txtDate.Text), Convert.ToInt32(txtAmount.Text), Convert.ToInt32(UserId));
+                _helper.InsertCollectionDetails(Convert.ToInt32(ddlState.SelectedValue), Convert.ToInt32(ddlProject.SelectedValue),Convert.ToDateTime(txtDate.Text), Convert.ToInt32(txtAmount.Text), Convert.ToInt32(UserId));
                 Show("Successfully Inserted");
             }
             else

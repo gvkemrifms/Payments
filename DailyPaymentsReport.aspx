@@ -13,6 +13,7 @@
 
         $(function() {
             $('#<%= txtDate.ClientID %>').datepicker({
+                dateFormat: 'dd-mm-yy',
                 changeMonth: true,
                 changeYear: true,
                 maxDate: 0
