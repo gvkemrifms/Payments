@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Text;
@@ -97,7 +98,7 @@ namespace DailyCollectionAndPayments
                     var sbclm = new StringBuilder();
                     foreach (DataRow row in dtPaymentsReport.Rows)
                     {
-                        sb.Append("SUM(IF(MONTH(`pay_date`)=" + ddlMonth.SelectedValue + " AND YEAR(`pay_date`)=" + ddlYear.SelectedValue + " AND project_id =" + row["project_id"] + " AND state_id =" + row["state_id"] + ", amount,NULL)) '" + row["ProjectName"] + "' ,");
+                        sb.Append("SUM(IF(MONTH(`pay_date`)=" + ddlMonth.SelectedValue + " AND YEAR(`pay_date`)=" + ddlYear.SelectedValue + " AND tpay.project_id =" + row["project_id"] + " AND tpay.state_id =" + row["state_id"] + ", amount,NULL)) '" + row["ProjectName"] + "' ,");
                         sbclm.Append("t.");
                         sbclm.Append("`" + row["ProjectName"] + "`,");
                     }
@@ -107,7 +108,15 @@ namespace DailyCollectionAndPayments
                     sbclm.Append("`Total`");
                     var sbResult = sb.ToString().TrimEnd(',');
                     var sblist = sbclm.ToString().TrimEnd(',');
-                    var query1 = "SELECT `payment_name`," + sblist + "  FROM `m_payments`  mt LEFT JOIN (SELECT `payment_type_id`, " + sbResult + " from t_payments  GROUP BY payment_type_id  ) T ON mt.`payment_type_id`= T.`payment_type_id` union SELECT 'Total', " + sbResult + " from t_payments   ";
+                    var query1 = "";                                           
+                        if (Convert.ToInt32(UserId) == 16|| Convert.ToInt32(UserId) == 17|| Convert.ToInt32(UserId) == 18|| Convert.ToInt32(UserId) == 19)
+                        {
+                            query1 = "SELECT `payment_name`," + sblist + "  FROM `m_payments`  mt LEFT JOIN (SELECT `payment_type_id`, " + sbResult + " from t_payments tpay join t_projectmapping pm on pm.state_id=tpay.state_id  WHERE tpay.project_id>0 AND tpay.payment_type_id>0  GROUP BY tpay.payment_type_id  ) T ON mt.`payment_type_id`= T.`payment_type_id` union SELECT 'Total', " + sbResult + " from t_payments tpay join t_projectmapping pm on pm.state_id=tpay.state_id  ";
+                        }
+                        else
+                        {
+                            query1 = "SELECT `payment_name`," + sblist + "  FROM `m_payments`  mt LEFT JOIN (SELECT `payment_type_id`, " + sbResult + " from t_payments tpay join t_projectmapping pm on pm.state_id=tpay.state_id  WHERE tpay.project_id>0 AND tpay.payment_type_id>0 and tpay.state_id=" + UserId + " GROUP BY tpay.payment_type_id  ) T ON mt.`payment_type_id`= T.`payment_type_id` union SELECT 'Total', " + sbResult + " from t_payments tpay join t_projectmapping pm on pm.state_id=tpay.state_id where tpay.state_id=" + UserId + " ";
+                        }                                                                                 
                     var dtPaymentsReports = _helper.ExecuteSelectStmt(query1);
                     dtPaymentsReports.Columns["payment_name"].ColumnName = "Payment";
                     gvPaymentsReport.DataSource = dtPaymentsReports;
